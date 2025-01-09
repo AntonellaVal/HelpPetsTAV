@@ -1,0 +1,7 @@
+{
+  "name": "helpPets",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
