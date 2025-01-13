@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Detalles del animalito</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-card class="card">
+    <div class="centrado">
+      <h1>Conoce mas sobre {{animal.nombre}}</h1>
+
+      <img class="imagen" [src]="animal.imagen" [alt]="animal.nombre" />
+      
+    </div>
+
+    <div class="texto">
+      <p><strong>nombre:</strong> {{ animal.nombre }}</p>
+      <p><strong>especie:</strong> {{ animal.especie }}</p>
+      <p><strong>edad:</strong> {{ animal.edad }}</p>
+      <p><strong>vacunas:</strong> {{ animal.vacunas }}</p>
+
+      <p *ngIf="animal.adoptado" style="color: red;">¡Este animal ya ha sido adoptado!</p>
+    </div>
+    <div class="botones">
+      <ion-button shape="round" color="light"  [disabled]="animal.adoptado" (click)="adoptar()">adoptar</ion-button>
+      <ion-button shape="round" color="medium"  (click)="volver()">volver</ion-button>
+    </div>
+
+  </ion-card>
+
+
+
+</ion-content>

@@ -1,0 +1,58 @@
+ion-content{
+    --background: url('/assets/fondo_app.jpg') no-repeat center center / cover; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; // Asegura que el contenido se coloque desde la parte superior
+    align-items: center;
+    height: 100%; // Ocupa toda la pantalla   
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px; // Espacio entre cards
+}
+
+.card {
+  background-color: #f4f4f4;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 110%; 
+  max-width: 150px; // Tamaño máximo para las cards
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .card-image {
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .card-title {
+    padding: 8px;
+    background-color: #e6edff;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+  }
+}
+
+ion-grid {
+  padding: 16px;
+}
+
+ion-row {
+  justify-content: center;
+}

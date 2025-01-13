@@ -1,0 +1,30 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>modificarEliminarAnimal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="cards-container">
+          <div class="card" *ngFor="let mascota of mascotas; let i = index"> 
+            <div class="card-image">
+               <ion-img [src]="mascota.imagen" alt="Foto de {{mascota.nombre}}"></ion-img>
+            </div>
+          <ion-card-header>
+            <ion-card-title>{{ mascota.nombre }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-button color="light" (click)="modificarMascota(i)">Modificar</ion-button>
+            <ion-button color="medium" (click)="eliminarMascota(i)">Eliminar</ion-button>
+          </ion-card-content>
+          </div>
+         
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

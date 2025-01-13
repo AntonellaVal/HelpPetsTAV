@@ -1,0 +1,13 @@
+ion-content{
+    --background: url('/assets/fondo_alter.jpg') no-repeat center center / cover; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; // Asegura que el contenido se coloque desde la parte superior
+    align-items: center;
+    height: 100%; // Ocupa toda la pantalla
+    
+}
+
+.titulo{
+    text-align: center;
+}

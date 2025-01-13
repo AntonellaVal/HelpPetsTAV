@@ -1,0 +1,18 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>principal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="centrado">
+    <div class="botones">
+      <ion-button class="boton" shape="round" expand="block" class="boton" color="medium"
+        [routerLink]="['/animales-en-adopcion']">Animales publicados</ion-button>
+      <ion-button shape="round" expand="block" class="boton" color="medium" [routerLink]="['/agregar-animal']">agregar
+        animal</ion-button>
+        <ion-button shape="round" expand="block" class="boton" color="medium" [routerLink]="['/modificar-eliminar-animal']">modificar y eliminar animal</ion-button>
+    </div>
+
+  </ion-card>
+</ion-content>

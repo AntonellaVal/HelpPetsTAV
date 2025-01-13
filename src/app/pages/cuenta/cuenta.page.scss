@@ -1,0 +1,38 @@
+ion-content{
+    --background: url('/assets/fondo_cuenta.jpg') no-repeat center center / cover; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; // Asegura que el contenido se coloque desde la parte superior
+    align-items: center;
+    height: 100%; // Ocupa toda la pantalla
+}
+
+.imagen{
+    width: 40%;
+    border-radius: 50%;
+    margin-top: 20px;
+}
+
+.centrado{
+    text-align: center;
+}
+
+.card{
+    background-color: #fdfeff;
+ 
+}
+
+.texto{
+    font-size: 18px;
+    width: 100%;
+}
+
+.texto2{
+    font-size: 18px;
+    width: 65%;
+}
+
+.botones{
+    margin-top: 15px;
+}
+

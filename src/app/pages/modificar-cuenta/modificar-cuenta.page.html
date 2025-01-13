@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>modificarCuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="centrado">
+    <h1>Modificar Usuario</h1>
+    <div class="centradoImput">
+      <ion-item class="item">
+      <ion-input class="input" label="Modificar Email" labelPlacement="floating" placeholder="Ingrese su nuevo email"
+        [(ngModel)]="email"></ion-input>
+    </ion-item>
+
+    <ion-text color="danger" class="error-message" *ngIf="email && !esCorreoValido()" style="text-align: center;">
+      El correo debe terminar en arroba gmail.com.
+    </ion-text>
+    </div>
+
+    <div class="botones">
+      <ion-button shape="round" color="light" (click)="irPerfil()"
+        [disabled]="!email || !esCorreoValido()">Confirmar</ion-button>
+      <ion-button shape="round" color="medium" (click)="irPerfil()">Cancelar</ion-button>
+    </div>
+
+  </div>
+</ion-content>

@@ -1,0 +1,74 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>agregarAnimal</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="card">
+    <div class="centradoImput">
+      <h2 class="texto">Por favor ingrese los datos del animal para su adopción:</h2>
+
+      <!-- Nombre del animal -->
+      <ion-item class="item">
+        <ion-input class="input" label="Nombre" labelPlacement="floating" placeholder="Nombre"
+          [(ngModel)]="nombre"></ion-input>
+      </ion-item>
+
+      <div *ngIf="errorNombreV" class="error-message">El nombre es obligatorio.</div>
+      <div *ngIf="errorNombre" class="error-message">El nombre solo puede contener letras y espacios.</div>
+
+      <!-- Edad del animal -->
+      <ion-item class="item">
+        <ion-input class="casilla" [(ngModel)]="edad" label="Edad del animal" type="number" min="0" step="1"
+          placeholder="Edad del animal"></ion-input>
+      </ion-item>
+      <div *ngIf="errorEdadCampo" class="error-message">La edad es obligatoria.</div>
+
+      <div class="centrado">
+        <ion-select class="casilla" [(ngModel)]="unidadEdad" label="Edad del animal" labelPlacement="floating">
+          <ion-select-option value="días">Días</ion-select-option>
+          <ion-select-option value="semanas">meses</ion-select-option>
+          <ion-select-option value="años">Años</ion-select-option>
+        </ion-select>
+        <div *ngIf="errorEdad" class="error-message">{{ errorEdadMessage }}</div>
+      </div>
+
+
+      <!-- Especie del animal -->
+      <ion-item class="item">
+        <ion-select class="casilla" [(ngModel)]="especie" label="Especie" labelPlacement="floating">
+          <ion-select-option value="conejo">Conejo</ion-select-option>
+          <ion-select-option value="perro">Perro</ion-select-option>
+          <ion-select-option value="gato">Gato</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div *ngIf="errorEspecie" class="error-message">La especie es obligatoria.</div>
+
+
+      <!-- Vacunas -->
+      <ion-item class="item">
+        <ion-select class="casilla" [(ngModel)]="tieneVacunas" label="¿Tiene Vacunas?" labelPlacement="floating">
+          <ion-select-option value="si">Sí</ion-select-option>
+          <ion-select-option value="no">No</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div *ngIf="errorVacunas" class="error-message">Debe seleccionar si el animal tiene vacunas.</div>
+
+      <ion-item *ngIf="tieneVacunas === 'si'" class="item">
+        <ion-input class="input" label="Detalle de Vacunas" labelPlacement="floating" placeholder="Ingrese las vacunas"
+          [(ngModel)]="vacunas"></ion-input>
+      </ion-item>
+
+      <div *ngIf="errorCamposVacios" class="error-message">Todos los campos son obligatorios.</div>
+
+      <!-- Botones -->
+      <div class="botones">
+        <ion-button shape="round" color="light"(click)="guardarAnimal()">Guardar</ion-button>
+        <ion-button shape="round" color="medium"(click)="cancelarCreacion()">Cancelar</ion-button>
+      </div>
+    </div>
+  </ion-card>
+</ion-content>

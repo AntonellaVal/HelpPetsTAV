@@ -1,0 +1,60 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot= "end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Adopta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card class="card">
+    <div class="centradoImput">
+       <h2 class="texto">para poder adoptar necesitamos los siguentes datos:</h2>
+
+    <ion-item class="item">
+      <ion-input class="input" label="ingrese su nombre" labelPlacement="floating"  placeholder="nombre" [(ngModel)]="nombre"></ion-input>
+    </ion-item>
+    <div *ngIf="errorNombre" class="error-message">El nombre debe tener entre 3 y 25 caracteres.</div>
+
+    <ion-item class="item">
+      <ion-input class="input" label="ingrese su apellido" labelPlacement="floating"  placeholder="apellido"[(ngModel)]="apellido"></ion-input>
+    </ion-item>
+    <div *ngIf="errorApellido" class="error-message">El apellido debe tener entre 3 y 25 caracteres.</div>
+
+    <ion-item class="item">
+      <ion-input class="input" label="ingrese su edad" labelPlacement="floating"  placeholder="edad" type="number"[(ngModel)]="edad"></ion-input>
+    </ion-item>
+    <div *ngIf="errorEdad" class="error-message">para adoptar es necesario que sea mayor de edad.</div>
+
+    <ion-item class="item">
+      <ion-input class="input" label="ingrese su telefono (+56)" labelPlacement="floating"  placeholder="sin ingresar +56" [(ngModel)]="telefono" type="tel"></ion-input>
+    </ion-item>
+    <div *ngIf="errorTelefono" class="error-message">el numero que ingreso no es valido, para que sea valido debe ser 9 xxxx xxxx</div>
+
+    <h2 class="texto">Para conocer a tu futuro compañero y completar el proceso de adopción, es necesario que agendes un día y una hora.</h2>
+
+    <ion-item class="item">
+      <ion-input class="input" label="ingrese su un dia" labelPlacement="floating" placeholder="ejemplo: xx/xx/xxxx" [(ngModel)]="fecha" type="date"></ion-input>
+    </ion-item>
+    <div *ngIf="errorFecha" class="error-message">el dia que ingreso no es valido</div>
+    
+    <h2 class="texto">Elija una de las horas que estan disponibles</h2>
+
+    <ion-item class="item">
+      <ion-select [(ngModel)]="horaSeleccionada" placeholder="Seleccione una hora" [(ngModel)]="horaSeleccionada">
+        <ion-select-option *ngFor="let hora of horasDisponibles" [value]="hora">{{ hora }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <div *ngIf="errorHora" class="error-message">Debe seleccionar una hora disponible.</div>
+
+    <!-- Botones -->
+    <div class="botones">
+      <ion-button shape="round" color="light"  (click)="validarCampos()">Aceptar</ion-button>
+      <ion-button shape="round" color="medium"  (click)="cancelarAdopcion()">Cancelar</ion-button>
+    </div>
+    
+    </div>
+
+  </ion-card>
+</ion-content>

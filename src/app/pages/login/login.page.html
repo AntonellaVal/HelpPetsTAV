@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="centrado">
+  <h2>Bienvenido a HelpPets</h2>
+
+    <img class="imagen" src="assets/logo_helppets.png" alt="logo HelpPets">
+
+    <h2>inicio de sesión</h2>
+
+    <div class="centradoImput">
+      <ion-item class="item">
+        <ion-input class="input" label="ingrese su correo" labelPlacement="floating" placeholder="correo" [(ngModel)]="email"></ion-input>
+      </ion-item>
+
+      <ion-item class="item">
+        <ion-input class="input" label="ingrese su contraseña" labelPlacement="floating" placeholder="contraseña" [(ngModel)]="contra"></ion-input>
+      </ion-item>
+    </div>
+    
+
+    <ion-button shape="round" class="boton" color="light" (click)="irARegistro()" >Registrarse</ion-button>
+    <ion-button shape="round" class="boton" color="medium" (click)="login()">Iniciar sesión</ion-button>
+  </div>
+  
+</ion-content>

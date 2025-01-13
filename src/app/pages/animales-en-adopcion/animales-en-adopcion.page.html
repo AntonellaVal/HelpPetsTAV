@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot= "end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Animales en adopcion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="cards-container">
+          <div
+            class="card"
+            *ngFor="let animal of animales"
+            (click)="verDetalles(animal)"
+          >
+            <div class="card-image">
+              <img [src]="animal.imagen" [alt]="animal.nombre" />
+            </div>
+            <div class="card-title">
+              {{ animal.nombre }}
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
