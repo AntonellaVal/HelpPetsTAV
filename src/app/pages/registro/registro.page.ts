@@ -19,7 +19,10 @@ export class RegistroPage implements OnInit {
   errorApellido: boolean = false;
   errorCorreo: boolean = false;
   errorContra: boolean = false;
+  errorContraVacio: boolean = false;
   errorConfirmarContra: boolean = false;
+
+  mostrarRequisitos: boolean = false;
 
   constructor(private alertController: AlertController,  private router: Router) { }
   
@@ -33,10 +36,15 @@ export class RegistroPage implements OnInit {
     await alert.present();
   }
 
+  esContraValida(): boolean {
+    const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=|\\{}[\]:;"'<>,.?/~`]).{8,}$/;
+    return regex.test(this.contra);
+  }
+
   // funcion para validar los campos
   validarRegistro() {
     const regexCorreo = /^[a-zA-Z0-9._%+-]+@(gmail\.com|gmail\.cl|helppets\.cl|hotmail\.com)$/;
-    const regexContra = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*.])[A-Za-z\d!@#$%^&*.]{8,}$/;
+    
 
     // Validación del nombre
     if (!this.nombre.match(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,25}$/)) {
@@ -59,12 +67,7 @@ export class RegistroPage implements OnInit {
       this.errorCorreo = false;
     }
 
-    // Validación de la contraseña
-    if (!this.contra.match(regexContra)) {
-      this.errorContra = true;
-    } else {
-      this.errorContra = false;
-    }
+    this.errorContraVacio = this.contra.trim() === '';
 
     // Validación de la confirmación de la contraseña
     if (this.contra !== this.confirmarContra) {
@@ -73,8 +76,14 @@ export class RegistroPage implements OnInit {
       this.errorConfirmarContra = false;
     }
 
-    if (!this.errorNombre && !this.errorApellido && !this.errorCorreo && !this.errorContra && !this.errorConfirmarContra) {
-      // Guardar datos en el backend o almacenamiento local aquí
+    if (
+      !this.errorNombre &&
+      !this.errorApellido &&
+      !this.errorCorreo &&
+      this.contra &&
+      this.esContraValida() &&
+      !this.errorConfirmarContra
+    ) {
       this.presentAlert('Registro Exitoso', 'Ahora puedes iniciar sesión');
       this.router.navigate(['/login'], {
         state: { email: this.correo, password: this.contra },

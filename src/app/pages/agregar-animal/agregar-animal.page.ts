@@ -31,7 +31,7 @@ export class AgregarAnimalPage implements OnInit {
     if (this.validarCampos()) {
       // Guardar lógica aquí (podría ser enviar al backend)
       await this.presentAlert('Éxito', 'El animal ha sido creado correctamente.');
-      this.router.navigate(['/animales-en-adopcion']); // Redirige a la página principal
+      this.router.navigate(['/principal-admin']); // Redirige a la página principal
     }
   }
 

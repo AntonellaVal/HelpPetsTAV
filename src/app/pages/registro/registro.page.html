@@ -32,8 +32,13 @@
       <ion-input-password-toggle slot="end" class="centradoOjo" color="medium"></ion-input-password-toggle>
       </ion-input>
     </ion-item>
-    <div *ngIf="errorContra" class="error-message">
-      La contraseña debe tener al menos 8 caracteres y contener un número.
+
+    <div *ngIf="errorContraVacio" class="error-message">
+      La contraseña es obligatoria.
+    </div>
+
+    <div *ngIf="contra && !esContraValida()" class="error-message-contra">
+      La contraseña debe tener al menos 8 caracteres, una mayuscula, un número y un caracter especial.
     </div>
 
     <ion-item class="item">
