@@ -14,9 +14,10 @@ export class ModificarCuentaPage implements OnInit {
   email: string = "";
 
   esCorreoValido(): boolean {
-    return this.email.endsWith('@gmail.com');
+    const dominiosPermitidos = ['@gmail.com', '@gmail.cl', '@hotmail.com'];
+    return dominiosPermitidos.some(dominio => this.email.endsWith(dominio));
   }
-
+  
   irPerfil(){
     let correcto = true;
 

@@ -11,9 +11,20 @@ import { AlertController } from '@ionic/angular';
 export class LoginPage implements OnInit {
 
   email: string = '';
-  contra: string = '';
+  password: string = '';
 
-  constructor(private alertController: AlertController,  private router: Router) { }
+  registroEmail: string = '';
+  registroPassword: string = '';
+
+  constructor(private alertController: AlertController,  private router: Router) { 
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { email: string; password: string };
+
+    if (state) {
+      this.registroEmail = state.email;
+      this.registroPassword = state.password;
+    }
+  }
   
   async presentAlert(titulo: string, mensaje: string) {
     const alert = await this.alertController.create({
@@ -40,17 +51,21 @@ export class LoginPage implements OnInit {
     const adminEmail = 'admin@helppets.cl';
     const adminContra = 'Admin.4419';
 
-    if (this.email === adminEmail && this.contra === adminContra) {
+    if (this.email === adminEmail && this.password=== adminContra) {
       this.router.navigate(['/principal-admin']);
       return;
     }
 
-    // Si es usuario normal, realiza una validación simple
-    if (this.email && this.contra) {
+    if (this.email.trim() === '' || this.password.trim() === '') {
+      this.presentAlert("Error","no puede dejar campos vacios")
+      return;
+    }
+
+    if (this.email === this.registroEmail && this.password === this.registroPassword) {
       this.presentAlert("¡BIENVENIDO!","Te damos la bienvenida a HelpPets");
-      this.router.navigate(['/animales-en-adopcion']);
+      this.router.navigate(['/animales-en-adopcion'])
     } else {
-      alert('Por favor, ingresa tu correo y contraseña.');
+      this.presentAlert("Error","el correo o la contraceña no son correctos")
     }
   }
 

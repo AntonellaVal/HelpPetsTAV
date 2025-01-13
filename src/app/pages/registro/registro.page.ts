@@ -76,7 +76,9 @@ export class RegistroPage implements OnInit {
     if (!this.errorNombre && !this.errorApellido && !this.errorCorreo && !this.errorContra && !this.errorConfirmarContra) {
       // Guardar datos en el backend o almacenamiento local aquí
       this.presentAlert('Registro Exitoso', 'Ahora puedes iniciar sesión');
-      this.router.navigate(['/login']);
+      this.router.navigate(['/login'], {
+        state: { email: this.correo, password: this.contra },
+      });
     }
   }
 
