@@ -67,6 +67,8 @@ export class RegistroPage implements OnInit {
       this.errorCorreo = false;
     }
 
+    //validacion campos vacios
+
     this.errorContraVacio = this.contra.trim() === '';
 
     // Validación de la confirmación de la contraseña
