@@ -17,12 +17,13 @@
       <img class="imagen" src="assets/foto_usuario.jpg" alt="foto usuario">
 
         <h2 class="texto2"> Nombre: {{nombre}}</h2>
-        <h2 class="texto2" >apellido: {{apellido}}</h2>
-        <h2 class="texto" >Email: {{ email }}</h2>
+        <h2 class="texto2">apellido: {{apellido}}</h2>
+        <h2 class="texto">Correo: {{ email }}</h2>
 
       <div class="botones">
         <ion-button shape="round" class="boton" color="light" (click)="ModificarCuenta()">modificar email</ion-button>
-        <ion-button shape="round" class="boton" color="medium" [routerLink]="['/login']">cerrar seccion</ion-button>
+        <ion-button shape="round" class="boton" color="light" (click)="ModificarContra()">modificar contraseña</ion-button>
+        <ion-button shape="round" class="boton" color="medium" [routerLink]="['/login']">cerrar sesión</ion-button>
       </div>
     </ion-card>
   </div>

@@ -23,6 +23,14 @@ export class CuentaPage implements OnInit {
     }
   }
 
+  ModificarContra(){
+    let correcto = true;
+
+    if(correcto){
+      this.router.navigate(['/modificar-contra'])
+    }
+  }
+
 
   ngOnInit() {
   }

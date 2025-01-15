@@ -60,7 +60,11 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modificar-animal/modificar-animal.module').then( m => m.ModificarAnimalPageModule)
   },
   {
-    path: 'not-found',
+    path: 'modificar-contra',
+    loadChildren: () => import('./pages/modificar-contra/modificar-contra.module').then( m => m.ModificarContraPageModule)
+  },
+  {
+    path: '**',
     loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
 ];

@@ -1,0 +1,70 @@
+ion-content{
+    --background: url('/assets/fondo_inicio.jpg') no-repeat center center / cover; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; // Asegura que el contenido se coloque desde la parte superior
+    align-items: center;
+    height: 100%; // Ocupa toda la pantalla
+    
+}
+
+.Titulo{
+    text-align: center;
+    margin-top: 50px;
+}
+
+.centradoImput{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.item{
+    --background: transparent;
+    width: 100%; 
+    max-width: 400px; 
+}
+
+.input{
+    width: 200%; 
+    margin-top: 20px;
+    --background: white;
+    --border-radius: 10px;
+    --padding-start: 10px;
+    height: 50px;
+
+    display: flex; /* Activa flexbox para alinear los elementos internos */
+    align-items: center; /* Centra verticalmente el contenido */
+    position: relative; 
+}
+
+.centradoOjo{
+    position: absolute; /* Fuera del flujo normal */
+    right: 10px; /* Ajusta según el espacio necesario */
+    top: 30%; /* Centra verticalmente */
+    transform: translateY(-50%); /* Corrige el desplazamiento */
+    z-index: 1;
+}
+
+.centradoBoton{
+    text-align: center;
+}
+
+.boton{
+    margin-top: 20px;
+}
+
+.error-message{
+    color: red;
+    font-size: 12px;
+    width: 87%;
+    
+}
+
+.error-message-contra{
+    color: rgb(69, 69, 69);
+    font-size: 12px;
+    width: 87%;
+    
+}

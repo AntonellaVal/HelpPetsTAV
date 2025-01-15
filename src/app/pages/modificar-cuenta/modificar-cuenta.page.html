@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>modificarCuenta</ion-title>
+    <ion-title>modificar Correo</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -10,13 +10,13 @@
     <h1>Modificar Usuario</h1>
     <div class="centradoImput">
       <ion-item class="item">
-      <ion-input class="input" label="Modificar Email" labelPlacement="floating" placeholder="Ingrese su nuevo email"
-        [(ngModel)]="email"></ion-input>
-    </ion-item>
+        <ion-input class="input" label="Modificar correo" labelPlacement="floating"
+          placeholder="Ingrese su nuevo correo" [(ngModel)]="email"></ion-input>
+      </ion-item>
 
-    <ion-text color="danger" class="error-message" *ngIf="email && !esCorreoValido()" style="text-align: center;">
-      El correo debe terminar en gmail.com, gmail.cl o hotmail.com.
-    </ion-text>
+      <ion-text color="danger" class="error-message" *ngIf="email && !esCorreoValido()" style="text-align: center;">
+        El correo debe terminar en gmail.com, gmail.cl o hotmail.com.
+      </ion-text>
     </div>
 
     <div class="botones">

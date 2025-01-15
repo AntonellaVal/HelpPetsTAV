@@ -65,7 +65,7 @@ export class LoginPage implements OnInit {
       this.presentAlert("¡BIENVENIDO!","Te damos la bienvenida a HelpPets");
       this.router.navigate(['/animales-en-adopcion'])
     } else {
-      this.presentAlert("Error","el correo o la contraceña no son correctos")
+      this.presentAlert("Error","el correo o la contraseña no son correctos")
     }
   }
 
