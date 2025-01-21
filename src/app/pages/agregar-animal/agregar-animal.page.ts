@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Camera, CameraResultType } from '@capacitor/camera';
 import { AlertController } from '@ionic/angular';
+import { BdServicioService } from 'src/app/services/bd-servicio.service';
 
 @Component({
   selector: 'app-agregar-animal',
@@ -11,11 +13,13 @@ import { AlertController } from '@ionic/angular';
 export class AgregarAnimalPage implements OnInit {
 
   nombre: string = '';
+  genero: string = '';
   edad: number = 0;
   unidadEdad: string = 'días';
-  especie: string = '';
+  foto: any
   tieneVacunas: string = 'no';
   vacunas: string = '';
+
   errorEdad: boolean = false;
   errorEdadMessage: string = '';
   errorCamposVacios: boolean = false;
@@ -25,7 +29,7 @@ export class AgregarAnimalPage implements OnInit {
   errorEspecie: boolean = false;
   errorVacunas: boolean = false;
 
-  constructor(private alertController: AlertController, private router: Router) { }
+  constructor(private alertController: AlertController, private router: Router, private bd: BdServicioService) { }
 
   async guardarAnimal() {
     if (this.validarCampos()) {
@@ -34,6 +38,22 @@ export class AgregarAnimalPage implements OnInit {
       this.router.navigate(['/principal-admin']); // Redirige a la página principal
     }
   }
+  takePicture = async () => {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri
+    });
+  
+    // image.webPath will contain a path that can be set as an image src.
+    // You can access the original file using image.path, which can be
+    // passed to the Filesystem API to read the raw data of the image,
+    // if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+    var imageUrl = image.webPath;
+  
+    // Can be set to the src of an image now
+    this.foto = imageUrl;
+  };
 
   // Validación de campos
   validarCampos(): boolean {
@@ -60,7 +80,7 @@ export class AgregarAnimalPage implements OnInit {
       esValido = false;
     }
 
-    if (!this.especie) {
+    if (!this.genero) {
       this.errorEspecie = true;
       esValido = false;
     }
@@ -70,7 +90,7 @@ export class AgregarAnimalPage implements OnInit {
       esValido = false;
     }
 
-    if (!this.nombre || !this.edad || !this.especie || this.tieneVacunas === '') {
+    if (!this.nombre || !this.edad || !this.genero || this.tieneVacunas === '') {
       this.errorCamposVacios = true;
       esValido = false;
     }
@@ -96,7 +116,9 @@ export class AgregarAnimalPage implements OnInit {
       this.errorEdad = false;
     }
 
+    this.bd.insertarMascota(this.nombre, this.genero, this.edad, this.unidadEdad, this.foto ,this.tieneVacunas,this.vacunas);
     return esValido;
+    
   }
 
   // Función para mostrar la alerta

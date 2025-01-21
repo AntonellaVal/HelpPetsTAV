@@ -24,7 +24,7 @@ export class BdServicioService {
   tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(25) NOT NULL, apellido_usuario VARCHAR(25) NOT NULL, correo VARCHAR(50) NOT NULL,clave VARCHAR(16) NOT NULL, fecha_nac INEGER, direccion VARCHAR(50) , telefono VARCHAR(9), id_rol INTEGER, FOREIGN KEY(id_rol) REFERENCES rol(id_rol));";
 
   //tabla mascota
-  tablaMascotas: string = "CREATE TABLE IF NOT EXISTS mascotas(id_mascota INTEGER PRIMARY KEY autoincrement, nombre_mascota VARCHAR(20) NOT NULL, genero_mascota VARCHAR(10) NOT NULL, edad_mascota INTEGER NOT NULL, unidad_edad VARCHAR(4) NOT NULL, foto_mascota BLOB, vacunas BOOLEAN, detalle_vacuna VARCHAR(250), id_especie INTEGER, FOREIGN KEY(id_especie) REFERENCES especie(id_especie));";
+  tablaMascotas: string = "CREATE TABLE IF NOT EXISTS mascotas(id_mascota INTEGER PRIMARY KEY autoincrement, nombre_mascota VARCHAR(20) NOT NULL, genero_mascota VARCHAR(10) NOT NULL, edad_mascota INTEGER NOT NULL, unidad_edad VARCHAR(4) NOT NULL, foto_mascota BLOB, vacunas VARCHAR(2) NOT NULL, detalle_vacuna VARCHAR(250), id_especie INTEGER, FOREIGN KEY(id_especie) REFERENCES especie(id_especie));";
 
   //tabla adopcion 
   tablaAdopcion: string = "CREATE TABLE IF NOT EXISTS adopcion(id_adopcion INTEGER PRIMARY KEY autoincrement, fecha_adopcion DATE, estatus BOOLEAN, id_usuario INTEGER, id_mascota INTEGER, FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
@@ -227,6 +227,28 @@ export class BdServicioService {
     this.presentAlert('Error', 'No se pudo registrar el usuario');
     console.error(e);
   });
+
+  }
+
+  //funcion ara insertar mascota
+  insertarMascota(nombre_mascota: string, genero_mascota:string, edad_mascota:number, unidad_edad:string, foto_mascota:Blob, vacunas:string, detalle_vacuna:string){
+    this.database.executeSql(
+      'INSERT INTO mascotas(nombre_mascota, genero_mascota, edad_mascota, unidad_edad, foto_mascota, vacunas, detalle_vacuna) VALUES(?,?,?,?,?,?,?)',
+      [nombre_mascota, genero_mascota, edad_mascota, unidad_edad, foto_mascota, vacunas, detalle_vacuna]
+    ).then(res => {
+      // Mostrar un mensaje de confirmación
+      this.presentAlert('exitoso', 'mascota guardada con exito');
+      
+      // Actualizar el observable de usuarios
+      this.buscarMascotas();
+  
+      // Redirigir al usuario a la página de login
+      this.router.navigate(['/principal-admin']);
+    }).catch(e => {
+      // Mostrar un mensaje de error si ocurre un problema
+      this.presentAlert('Error', 'mascota no guardada');
+      console.error(e);
+    });
 
   }
   

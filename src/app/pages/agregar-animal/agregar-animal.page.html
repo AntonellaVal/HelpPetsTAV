@@ -37,7 +37,7 @@
 
       <!-- Especie del animal -->
       <ion-item class="item">
-        <ion-select class="casilla" [(ngModel)]="especie" label="Especie" labelPlacement="floating">
+        <ion-select class="casilla" [(ngModel)]="genero" label="Especie" labelPlacement="floating">
           <ion-select-option value="conejo">Conejo</ion-select-option>
           <ion-select-option value="perro">Perro</ion-select-option>
           <ion-select-option value="gato">Gato</ion-select-option>
@@ -64,10 +64,13 @@
 
       <div *ngIf="errorCamposVacios" class="error-message">Todos los campos son obligatorios.</div>
 
+      <ion-button (click)="takePicture()">Tomar una Foto</ion-button>
+      <img [src]="foto" alt="Sin foto" *ngIf="foto">
+
       <!-- Botones -->
       <div class="botones">
-        <ion-button shape="round" color="light"(click)="guardarAnimal()">Guardar</ion-button>
-        <ion-button shape="round" color="medium"(click)="cancelarCreacion()">Cancelar</ion-button>
+        <ion-button shape="round" color="light" (click)="guardarAnimal()">Guardar</ion-button>
+        <ion-button shape="round" color="medium" (click)="cancelarCreacion()">Cancelar</ion-button>
       </div>
     </div>
   </ion-card>
