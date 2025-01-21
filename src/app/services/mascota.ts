@@ -5,5 +5,7 @@ export class Mascota {
     edad_mascota: number = 0;
     unidad_edad: string = '';
     foto_mascota: any;
+    vacunas!: boolean;
+    detalle_vacuna:string = "";
     id_especie!: number;
 }

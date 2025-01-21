@@ -24,10 +24,7 @@ export class BdServicioService {
   tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(25) NOT NULL, apellido_usuario VARCHAR(25) NOT NULL, correo VARCHAR(50) NOT NULL,clave VARCHAR(16) NOT NULL, fecha_nac INEGER, direccion VARCHAR(50) , telefono VARCHAR(9), id_rol INTEGER, FOREIGN KEY(id_rol) REFERENCES rol(id_rol));";
 
   //tabla mascota
-  tablaMascota: string = "CREATE TABLE IF NOT EXISTS mascota(id_mascota INTEGER PRIMARY KEY autoincrement, nombre_mascota VARCHAR(20) NOT NULL, genero_mascota VARCHAR(10) NOT NULL, edad_mascota INTEGER NOT NULL, unidad_edad VARCHAR(4) NOT NULL, foto_mascota BLOB, id_especie INTEGER, FOREIGN KEY(id_especie) REFERENCES especie(id_especie));";
-
-  //tabla vacunas 
-  tablaVacunas: string = "CREATE TABLE IF NOT EXISTS vacunas(id_vacuna INTEGER PRIMARY KEY autoincrement, nombre_vacuna VARCHAR(40), fecha_vacunacion integer, id_mascota INTEGER,FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
+  tablaMascotas: string = "CREATE TABLE IF NOT EXISTS mascotas(id_mascota INTEGER PRIMARY KEY autoincrement, nombre_mascota VARCHAR(20) NOT NULL, genero_mascota VARCHAR(10) NOT NULL, edad_mascota INTEGER NOT NULL, unidad_edad VARCHAR(4) NOT NULL, foto_mascota BLOB, vacunas BOOLEAN, detalle_vacuna VARCHAR(250), id_especie INTEGER, FOREIGN KEY(id_especie) REFERENCES especie(id_especie));";
 
   //tabla adopcion 
   tablaAdopcion: string = "CREATE TABLE IF NOT EXISTS adopcion(id_adopcion INTEGER PRIMARY KEY autoincrement, fecha_adopcion DATE, estatus BOOLEAN, id_usuario INTEGER, id_mascota INTEGER, FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
@@ -40,7 +37,7 @@ export class BdServicioService {
   registroEspecie: string = "INSERT or IGNORE INTO especie(id_especie,nombre_especie) VALUES(1,'perro'), (2,'gato'), (3,'conejo');";
 
   //registro usuario
-  registroUsuario: string = "INSERT or IGNORE INTO usuarios(id_usuario,nombre_usuario, apellido_usuario, correo, clave, fecha_nac, direccion, id_rol) VALUES(1,'jose','casas', 'Admin@helppets.cl', 'Admin.123456', '07/05/1999', 'La Serena 1073', 1);";
+  registroUsuario: string = "INSERT or IGNORE INTO usuarios(id_usuario,nombre_usuario, apellido_usuario, correo, clave, fecha_nac, direccion, id_rol) VALUES(1,'jose','casas', 'admin@helppets.cl', 'Admin.123456', '07/05/1999', 'La Serena 1073', 1);";
 
   //registro mascota
   registroMascota: string = "INSERT or IGNORE INTO mascota(nombre_mascota, edad_mascota, unidad_edad, id_especie) VALUES ('Waton', 2, 'años', 2);";
@@ -118,10 +115,7 @@ export class BdServicioService {
       await this.database.executeSql(this.tablaUsuarios, []);
 
       //tabla mascota
-      await this.database.executeSql(this.tablaMascota, []);
-
-      //tabla vacunas
-      await this.database.executeSql(this.tablaVacunas, []);
+      await this.database.executeSql(this.tablaMascotas, []);
 
       //tablas adopcion
       await this.database.executeSql(this.tablaAdopcion, []);
@@ -181,7 +175,7 @@ export class BdServicioService {
 
   buscarMascotas() {
     // Retorno del select de la BD en la tabla usuario
-    this.database.executeSql('SELECT * FROM mascota', []).then(res => {
+    this.database.executeSql('SELECT * FROM mascotas', []).then(res => {
       // Creo una lista vacía para almacenar los registros del cursor
       let items: Mascota[] = [];
       // Verificar si el cursor trae registros
@@ -196,6 +190,8 @@ export class BdServicioService {
             edad_mascota: res.rows.item(i).edad_mascota,
             unidad_edad: res.rows.item(i).unidad_edad,
             foto_mascota: res.rows.item(i).foto_mascota,
+            vacunas: res.rows.item(i).vacunas,
+            detalle_vacuna: res.rows.item(i).detalle_vacuna,
             id_especie: res.rows.item(i).id_especie
           })
         }
