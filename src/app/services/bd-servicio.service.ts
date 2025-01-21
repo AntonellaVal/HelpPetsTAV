@@ -146,34 +146,36 @@ export class BdServicioService {
     }
   }
 
-  buscarUsuarios() {
-    // Retorno del select de la BD en la tabla usuario
-    this.database.executeSql('SELECT * FROM usuarios', []).then(res => {
-      // Creo una lista vacía para almacenar los registros del cursor
-      let items: Usuario[] = [];
-      // Verificar si el cursor trae registros
-      if (res.rows.length > 0) {
-        // Ciclo para recorrer el cursor
-        for (var i = 0; i < res.rows.length; i++) {
-          // Agrego los registros a mi lista vacía usando la clase Usuario
-          items.push({
-            id_usuario: res.rows.item(i).id_usuario,
-            nombre_usuario: res.rows.item(i).nombre_usuario,
-            apellido_usuario: res.rows.item(i).apellido_usuario,
-            correo: res.rows.item(i).correo,
-            clave: res.rows.item(i).clave,
-            fecha_nac: res.rows.item(i).fecha_nac,
-            direccion: res.rows.item(i).direccion,
-            id_rol: res.rows.item(i).id_rol
-
-          })
-        }
-      }
-      // Actualizar el observable
-      this.listaUsuarios.next(items as any);
+  buscarUsuarios(): Promise<Usuario[]> {
+    return new Promise((resolve, reject) => {
+      // Ejecutar la consulta en la base de datos
+      this.database.executeSql('SELECT * FROM usuarios', [])
+        .then(res => {
+          let items: Usuario[] = []; // Lista vacía para almacenar los registros del cursor
   
-    }).catch(e => {
-      this.presentAlert('error buscarUsuarios', JSON.stringify(e));
+          // Verificar si el cursor trae registros
+          if (res.rows.length > 0) {
+            // Ciclo para recorrer el cursor y llenar la lista
+            for (let i = 0; i < res.rows.length; i++) {
+              items.push({
+                id_usuario: res.rows.item(i).id_usuario,
+                nombre_usuario: res.rows.item(i).nombre_usuario,
+                apellido_usuario: res.rows.item(i).apellido_usuario,
+                correo: res.rows.item(i).correo,
+                clave: res.rows.item(i).clave,
+                fecha_nac: res.rows.item(i).fecha_nac,
+                direccion: res.rows.item(i).direccion,
+                id_rol: res.rows.item(i).id_rol
+              });
+            }
+          }
+  
+          resolve(items); // Resuelve la Promise con los usuarios encontrados
+        })
+        .catch(err => {
+          console.error('Error al ejecutar la consulta de usuarios', err);
+          reject(err); // Rechaza la Promise en caso de error
+        });
     });
   }
 
@@ -207,17 +209,28 @@ export class BdServicioService {
   }
   
   //funcion para insertar usuarios 
-  insertarUsuario(nombre_usuario:string, apellido_usuario:string,correo: string, clave: string,){
-    //retornar el insert en la tabla
-    this.database.executeSql('INSERT INTO usuarios(nombre_usuario, apellido_usuario, correo, clave) VALUES(?,?,?,?)',[nombre_usuario, apellido_usuario, correo, clave]).then(res=>{
-      //mostrar un mensaje indicado el registro completo
-      this.presentAlert('Registro','Usuario registrado correctamente');
-      //actualizar el observable
-      this.buscarUsuarios();
-      this.router.navigate(['/login']);
-    }).catch(e=>{
-      this.presentAlert('error insertarUsuario', JSON.stringify(e));
-    })
+  insertarUsuario(nombre_usuario:string, apellido_usuario:string,correo: string, clave: string){
+   // Asignamos el id_rol como 2 para el rol de usuario normal
+  const idRol = 2; 
+
+  // Realizamos el insert en la base de datos para registrar al nuevo usuario
+  this.database.executeSql(
+    'INSERT INTO usuarios(nombre_usuario, apellido_usuario, correo, clave, id_rol) VALUES(?, ?, ?, ?, ?)',
+    [nombre_usuario, apellido_usuario, correo, clave, idRol]
+  ).then(res => {
+    // Mostrar un mensaje de confirmación
+    this.presentAlert('Registro', 'Usuario registrado correctamente');
+    
+    // Actualizar el observable de usuarios
+    this.buscarUsuarios();
+
+    // Redirigir al usuario a la página de login
+    this.router.navigate(['/login']);
+  }).catch(e => {
+    // Mostrar un mensaje de error si ocurre un problema
+    this.presentAlert('Error', 'No se pudo registrar el usuario');
+    console.error(e);
+  });
 
   }
   

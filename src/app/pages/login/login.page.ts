@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { BdServicioService } from 'src/app/services/bd-servicio.service';
 
 @Component({
   selector: 'app-login',
@@ -16,15 +17,7 @@ export class LoginPage implements OnInit {
   registroEmail: string = '';
   registroPassword: string = '';
 
-  constructor(private alertController: AlertController,  private router: Router) { 
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as { email: string; password: string };
-
-    if (state) {
-      this.registroEmail = state.email;
-      this.registroPassword = state.password;
-    }
-  }
+  constructor(private alertController: AlertController,  private router: Router,private bd: BdServicioService) { }
   
   async presentAlert(titulo: string, mensaje: string) {
     const alert = await this.alertController.create({
@@ -46,28 +39,36 @@ export class LoginPage implements OnInit {
   } 
 
   login() {
-    
-    // Credenciales del admin
-    const adminEmail = 'admin@helppets.cl';
-    const adminContra = 'Admin.4419';
 
-    if (this.email === adminEmail && this.password=== adminContra) {
-      this.router.navigate(['/principal-admin']);
-      return;
-    }
 
     if (this.email.trim() === '' || this.password.trim() === '') {
       this.presentAlert("Error","no puede dejar campos vacios")
       return;
     }
-
-    if (this.email === this.registroEmail && this.password === this.registroPassword) {
-      this.presentAlert("¡BIENVENIDO!","Te damos la bienvenida a HelpPets");
-      this.router.navigate(['/animales-en-adopcion'])
-    } else {
-      this.presentAlert("Error","el correo o la contraseña no son correctos")
+     // Verificar si es el administrador
+     if (this.email === 'admin@helppets.cl' && this.password === 'Admin.123456') {
+      this.router.navigate(['/principal-admin']);
+      return;
     }
-  }
+
+    // Verificar si el correo y la contraseña corresponden a un usuario normal
+    this.bd.buscarUsuarios().then((usuarios: { correo: string; clave: string }[]) => {
+      const usuario = usuarios.find(
+        (user: { correo: string; clave: string }) =>
+          user.correo === this.email && user.clave === this.password
+      );
+  
+      if (usuario) {
+        this.presentAlert('¡Bienvenido!', 'Te damos la bienvenida a HelpPets');
+        this.router.navigate(['/animales-en-adopcion']);
+      } else {
+        this.presentAlert('Error', 'El correo o la contraseña no son correctos');
+      }
+    }).catch((error: any) => {
+      this.presentAlert('Error', 'Ocurrió un error al buscar usuarios.');
+      console.error(error);
+    });
+}
 
   irARegistro() {
     this.router.navigate(['/registro']);

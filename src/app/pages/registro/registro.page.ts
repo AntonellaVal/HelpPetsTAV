@@ -16,6 +16,7 @@ export class RegistroPage implements OnInit {
   contra:string="";
   confirmarContra:string="";
 
+
   errorNombre: boolean = false;
   errorApellido: boolean = false;
   errorCorreo: boolean = false;
