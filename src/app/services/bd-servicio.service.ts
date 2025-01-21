@@ -4,6 +4,7 @@ import { AlertController, Platform } from '@ionic/angular';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Usuario } from './usuario';
 import { Mascota } from './mascota';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,38 +15,38 @@ export class BdServicioService {
 
   //tablas de la BD 
   //tabla rol
-  tablaRol: string = "CREATE TABLE IF NOT EXISTS rol(id_rol INTEGER PRIMARY KEY, nombre_rol VARCHAR(20) NOT NULL);";
+  tablaRol: string = "CREATE TABLE IF NOT EXISTS rol(id_rol INTEGER PRIMARY KEY autoincrement, nombre_rol VARCHAR(20) NOT NULL);";
 
   //tabla especie
-  tablaEspecie: string = "CREATE TABLE IF NOT EXISTS especie(id_especie INTEGER PRIMARY KEY, nombre_especie VARCHAR(20) NOT NULL);";
+  tablaEspecie: string = "CREATE TABLE IF NOT EXISTS especie(id_especie INTEGER PRIMARY KEY autoincrement, nombre_especie VARCHAR(20) NOT NULL);";
 
   //tabla usuario
-  tablaUsuario: string = "CREATE TABLE IF NOT EXISTS usuario(id_usuario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(25) NOT NULL, apellido_usuario VARCHAR(25) NOT NULL, correo VARCHAR(50) NOT NULL,clave VARCHAR(16) NOT NULL, fecha_nac DATE NOT NULL, direccion VARCHAR(50) NOT NULL, id_rol INTEGER, FOREIGN KEY(id_rol) REFERENCES rol(id_rol));";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(25) NOT NULL, apellido_usuario VARCHAR(25) NOT NULL, correo VARCHAR(50) NOT NULL,clave VARCHAR(16) NOT NULL, fecha_nac INEGER, direccion VARCHAR(50) , telefono VARCHAR(9), id_rol INTEGER, FOREIGN KEY(id_rol) REFERENCES rol(id_rol));";
 
   //tabla mascota
   tablaMascota: string = "CREATE TABLE IF NOT EXISTS mascota(id_mascota INTEGER PRIMARY KEY autoincrement, nombre_mascota VARCHAR(20) NOT NULL, genero_mascota VARCHAR(10) NOT NULL, edad_mascota INTEGER NOT NULL, unidad_edad VARCHAR(4) NOT NULL, foto_mascota BLOB, id_especie INTEGER, FOREIGN KEY(id_especie) REFERENCES especie(id_especie));";
 
   //tabla vacunas 
-  tablaVacunas: string = "CREATE TABLE IF NOT EXISTS vacunas(id_vacuna INTEGER PRIMARY KEY autoincrement, nombre_vacuna VARCHAR(40), fecha_vacunacion DATE, id_mascota INTEGER,FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
+  tablaVacunas: string = "CREATE TABLE IF NOT EXISTS vacunas(id_vacuna INTEGER PRIMARY KEY autoincrement, nombre_vacuna VARCHAR(40), fecha_vacunacion integer, id_mascota INTEGER,FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
 
   //tabla adopcion 
-  tablaAdopcion: string = "CREATE TABLE IF NOT EXISTS adopcion(id_adopcion INTEGER PRIMARY KEY autoincrement, fecha_adopcion DATE, estatus BOOLEAN, id_ususario INTEGER, id_mascota INTEGER, FOREIGN KEY(id_usuario) REFERENCES usario(id_usuario),FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
+  tablaAdopcion: string = "CREATE TABLE IF NOT EXISTS adopcion(id_adopcion INTEGER PRIMARY KEY autoincrement, fecha_adopcion DATE, estatus BOOLEAN, id_usuario INTEGER, id_mascota INTEGER, FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
 
   //variables para insert principales o precargados
   //registro rol
-  registroRol: string = "INSERT or IGNORE INTO rol(id_rol,nombre_rol) VALUES(1,'administrador', (2, 'usuario normal');";
+  registroRol: string = "INSERT or IGNORE INTO rol(id_rol,nombre_rol) VALUES(1,'administrador'), (2, 'usuario normal');";
 
   //registro especie
   registroEspecie: string = "INSERT or IGNORE INTO especie(id_especie,nombre_especie) VALUES(1,'perro'), (2,'gato'), (3,'conejo');";
 
   //registro usuario
-  registroUsuario: string = "INSERT or IGNORE INTO rol(id_usuario,nombre_usuario, apellido_usuario, correo, clave, fecha_nac, direccion, id_rol) VALUES(1,'jose','casas', 'Admin@helppets.cl', 'Admin.123456', '07/05/1999', 'La Serena 1073', 1);";
+  registroUsuario: string = "INSERT or IGNORE INTO usuarios(id_usuario,nombre_usuario, apellido_usuario, correo, clave, fecha_nac, direccion, id_rol) VALUES(1,'jose','casas', 'Admin@helppets.cl', 'Admin.123456', '07/05/1999', 'La Serena 1073', 1);";
 
   //registro mascota
   registroMascota: string = "INSERT or IGNORE INTO mascota(nombre_mascota, edad_mascota, unidad_edad, id_especie) VALUES ('Waton', 2, 'años', 2);";
 
   //registro adopcion
-  registroAdopcion: string = "INSERT or IGNORE INTO adopcion(fecha_adopcion, estatus, id_usuario, id_mascota) VALUES ('18/01/2025', 1, (SELECT id_usuario FROM usuario WHERE nombre_usuario = 'jose' AND apellido_usuario = 'casas'), (SELECT id_mascota FROM mascota WHERE nombre_mascota = 'Waton'));";
+  registroAdopcion: string = "INSERT or IGNORE INTO adopcion(fecha_adopcion, estatus, id_usuario, id_mascota) VALUES ('18/01/2025', 1, (SELECT id_usuario FROM usuarios WHERE nombre_usuario = 'jose' AND apellido_usuario = 'casas'), (SELECT id_mascota FROM mascota WHERE nombre_mascota = 'Waton'));";
 
   //Hay que agregar las clases pero eso lo haremos en la clase del profe para que todo quede correcto
   //podemos crear una clase adopcion id_adopcion: number;fecha_adopcion: string;estatus: number; // 1 para "adoptada", 0 para "no adoptada"id_usuario: number;id_mascota: number;vacunas: Vacuna[];y ahi poner las vacunas para que se puedan entrelazar para el registro adopcion o tambien podemos alter table vacunas add column id_mascota integer; y luego crear la clase vacuna con estos datos id_vacuna: number;nombre_vacuna: string;fecha_vacunacion: string;id_mascota: number;id_adopcion: number; MUCHOS DATOSSSSSS
@@ -58,7 +59,7 @@ export class BdServicioService {
   //observable del status de la BD
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  constructor(private sqlite: SQLite, private platform: Platform, private alertcontroller: AlertController) { 
+  constructor(private sqlite: SQLite, private platform: Platform, private alertcontroller: AlertController, private router: Router) { 
     this.crearBD();
   }
 
@@ -114,7 +115,7 @@ export class BdServicioService {
       await this.database.executeSql(this.tablaEspecie, []);
 
       //tabla usuario
-      await this.database.executeSql(this.tablaUsuario, []);
+      await this.database.executeSql(this.tablaUsuarios, []);
 
       //tabla mascota
       await this.database.executeSql(this.tablaMascota, []);
@@ -136,6 +137,7 @@ export class BdServicioService {
       await this.database.executeSql(this.registroUsuario, []);
 
       //rellene el observable de usuarios
+      this.buscarUsuarios();
       //actualizo el status de la base de datos
       this.isDBReady.next(true);
 
@@ -146,7 +148,7 @@ export class BdServicioService {
 
   buscarUsuarios() {
     // Retorno del select de la BD en la tabla usuario
-    this.database.executeSql('SELECT * FROM usuario', []).then(res => {
+    this.database.executeSql('SELECT * FROM usuarios', []).then(res => {
       // Creo una lista vacía para almacenar los registros del cursor
       let items: Usuario[] = [];
       // Verificar si el cursor trae registros
@@ -204,6 +206,20 @@ export class BdServicioService {
     });
   }
   
+  //funcion para insertar usuarios 
+  insertarUsuario(nombre_usuario:string, apellido_usuario:string,correo: string, clave: string,){
+    //retornar el insert en la tabla
+    this.database.executeSql('INSERT INTO usuarios(nombre_usuario, apellido_usuario, correo, clave) VALUES(?,?,?,?)',[nombre_usuario, apellido_usuario, correo, clave]).then(res=>{
+      //mostrar un mensaje indicado el registro completo
+      this.presentAlert('Registro','Usuario registrado correctamente');
+      //actualizar el observable
+      this.buscarUsuarios();
+      this.router.navigate(['/login']);
+    }).catch(e=>{
+      this.presentAlert('error insertarUsuario', JSON.stringify(e));
+    })
+
+  }
   
 
 

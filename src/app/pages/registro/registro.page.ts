@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController} from '@ionic/angular';
+import { BdServicioService } from 'src/app/services/bd-servicio.service';
 
 @Component({
   selector: 'app-registro',
@@ -24,7 +25,7 @@ export class RegistroPage implements OnInit {
 
   mostrarRequisitos: boolean = false;
 
-  constructor(private alertController: AlertController,  private router: Router) { }
+  constructor(private alertController: AlertController,  private router: Router ,private bd: BdServicioService) { }
   
   async presentAlert(titulo:string, mensaje:string) {
     const alert = await this.alertController.create({
@@ -86,10 +87,7 @@ export class RegistroPage implements OnInit {
       this.esContraValida() &&
       !this.errorConfirmarContra
     ) {
-      this.presentAlert('Registro Exitoso', 'Ahora puedes iniciar sesión');
-      this.router.navigate(['/login'], {
-        state: { email: this.correo, password: this.contra },
-      });
+      this.bd.insertarUsuario(this.nombre, this.apellido, this.correo, this.contra);
     }
   }
 
