@@ -64,6 +64,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/modificar-contra/modificar-contra.module').then( m => m.ModificarContraPageModule)
   },
   {
+    path: 'animales-adoptados-api',
+    loadChildren: () => import('./pages/animales-adoptados-api/animales-adoptados-api.module').then( m => m.AnimalesAdoptadosApiPageModule)
+  },
+  {
     path: '**',
     loadChildren: () => import('./pages/not-found/not-found.module').then( m => m.NotFoundPageModule)
   },

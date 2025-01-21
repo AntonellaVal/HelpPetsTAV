@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>animalesAdoptadosApi</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <h2 class="texto">Animales adoptados en otras sucursales</h2>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="cards-container">
+          <div class="card" *ngFor="let x of posts">
+            <div class="card-image">
+              <img [src]="x.imagen" alt=""/>
+            </div>
+            <div class="card-title">
+              {{ x.nombre }}
+            </div>
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
