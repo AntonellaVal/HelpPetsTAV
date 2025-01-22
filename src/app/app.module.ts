@@ -10,6 +10,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 import { HttpClientModule } from '@angular/common/http';
 
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule],
