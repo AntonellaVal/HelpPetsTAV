@@ -212,7 +212,7 @@ export class BdServicioService {
   
   buscarCuenta(id_usuario: number) {
     // Realizamos la consulta a la base de datos
-    this.database.executeSql('SELECT nombre_usuario, apellido_usuario, clave FROM usuarios WHERE id_usuario = ?', [id_usuario])
+    this.database.executeSql('SELECT nombre_usuario, apellido_usuario, correo FROM usuarios WHERE id_usuario = ?', [id_usuario])
       .then(res => {
         let items: Usuario[] = [];
         // Creo una lista vacía para almacenar los registros del cursor

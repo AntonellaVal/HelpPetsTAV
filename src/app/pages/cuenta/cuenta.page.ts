@@ -34,14 +34,18 @@ export class CuentaPage implements OnInit {
 
   ngOnInit() {
     //consultar el estatus de la base de datos
-    this.bd.dbStatus().subscribe(res=>{
-      if(res){
-        //subscribirnos al observable de la lista de usuarios y rellenar mi variable propia
-        this.bd.fetchCuenta().subscribe(data=>{
-          this.cuenta = data;
-        })
+    this.bd.dbStatus().subscribe(res => {
+      if (res) {
+        // Subscribirse al observable de la lista de usuarios y rellenar mi variable propia
+        this.bd.fetchCuenta().subscribe(data => {
+          // Aquí debes asegurarte de que data contiene un solo usuario
+          // Suponiendo que solo hay un usuario en la lista o se selecciona el usuario correcto
+          if (data && data.length > 0) {
+            this.cuenta = data[0]; // Asumimos que hay solo un usuario, si no, deberías filtrar por ID
+          }
+        });
       }
-    })
+    });
   }
 
 }
