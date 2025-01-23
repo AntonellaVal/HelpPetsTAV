@@ -20,7 +20,7 @@ export class AnimalesEnAdopcionPage implements OnInit {
       foto_mascota: ' ',
       vacunas: ' ',
       detalle_vacuna: ' ',
-      id_especie: ' '
+      especie: ' '
     },
   ];
 
@@ -38,7 +38,7 @@ export class AnimalesEnAdopcionPage implements OnInit {
         unidad_edad: animal.unidad_edad,
         vacunas: animal.vacunas,
         detalle_vacuna: animal.detalle_vacuna,
-        nombre_especie: animal.nombre_especie
+        especie: animal.especie 
       },
     };
     this.router.navigate(['/informacion-animal'], navigationExtras);

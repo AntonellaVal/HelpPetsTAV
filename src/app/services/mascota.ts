@@ -7,5 +7,5 @@ export class Mascota {
     foto_mascota: any;
     vacunas!: boolean;
     detalle_vacuna:string = "";
-    id_especie!: number;
+    especie:string = "";
 }

@@ -175,7 +175,7 @@ export class BdServicioService {
 
   buscarMascotas() {
     // Retorno del select de la BD en la tabla usuario
-    this.database.executeSql('SELECT * FROM mascotas', []).then(res => {
+    this.database.executeSql('SELECT m.id_mascota, m.nombre_mascota, m.genero_mascota, m.edad_mascota, m.unidad_edad, m.foto_mascota, m.vacunas, m.detalle_vacuna, e.nombre_especie FROM mascotas m INNER JOIN especie e ON m.id_especie = e.id_especie', []).then(res => {
       // Creo una lista vacía para almacenar los registros del cursor
       let items: Mascota[] = [];
       // Verificar si el cursor trae registros
@@ -192,7 +192,7 @@ export class BdServicioService {
             foto_mascota: res.rows.item(i).foto_mascota,
             vacunas: res.rows.item(i).vacunas,
             detalle_vacuna: res.rows.item(i).detalle_vacuna,
-            id_especie: res.rows.item(i).id_especie
+            especie:res.rows.item(i).nombre_especie
           })
         }
       }
