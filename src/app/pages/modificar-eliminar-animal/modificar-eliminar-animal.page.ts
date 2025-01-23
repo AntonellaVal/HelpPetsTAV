@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
+import { BdServicioService } from 'src/app/services/bd-servicio.service';
 
 @Component({
   selector: 'app-modificar-eliminar-animal',
@@ -9,27 +10,44 @@ import { Router } from '@angular/router';
 })
 export class ModificarEliminarAnimalPage implements OnInit {
 
-  mascotas = [
-    { nombre: 'Teodora', imagen: '/assets/teo.jpg', especie: 'conejo', edad: '2 semanas', vacunas: 'no' },
-    { nombre: 'Bolt', imagen: '/assets/perro_cafeynegro.jpg', especie: 'perro', edad: '3 meses', vacunas: 'sí' },
-    { nombre: 'Estrellita', imagen: '/assets/gato_gris.jpg', especie: 'gato', edad: '1 año', vacunas: 'no' },
-    { nombre: 'Atom', imagen: '/assets/atom.jpg', especie: 'gato', edad: '3 año', vacunas: 'no' },
-    { nombre: 'Waton', imagen: '/assets/conejo_waton.jpg', especie: 'conejo', edad: '2 año', vacunas: 'no' },
-    { nombre: 'Colo-Colo', imagen: '/assets/perro_negroyblanco.jpg', especie: 'perro', edad: '2 meses', vacunas: 'no' },
-    { nombre: 'Mishu', imagen: '/assets/gato_naranja.jpg', especie: 'gato', edad: '1 año', vacunas: 'no' },
-    { nombre: 'Sonny', imagen: '/assets/Sonny.jpg', especie: 'conejo', edad: '1 año', vacunas: 'no' },
+  animales: any = [
+    {
+      id_mascota: 0,
+      nombre_mascota: ' ',
+      genero_mascota: ' ',
+      edad_mascota: 0,
+      unidad_edad: ' ',
+      foto_mascota: ' ',
+      vacunas: ' ',
+      detalle_vacuna: ' ',
+      especie: ' '
+    },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private bd: BdServicioService, private router: Router,) { }
 
-  modificarMascota(index: number) {
-    this.router.navigate(['/modificar-animal'], { state: { mascota: this.mascotas[index], index } });
+  modificarMascota(x: any) {
+    //guardar los datos del usuario en una variable de contexto
+    let navigationExtras: NavigationExtras = {
+      state: {
+        Mascota: x
+      }
+    }
+
+    //envio la informacipón a la pagina de modificar
+    this.router.navigate(['/modificar-animal'], navigationExtras);
+
   }
 
-  eliminarMascota(index: number) {
-    this.mascotas.splice(index, 1);
+  eliminarMascota(x: any) {
+    this.bd.eliminarMascota(x.id_mascota);
   }
+
   ngOnInit() {
+    // Obtener las mascotas cuando la página se inicialice
+    this.bd.fetchMascota().subscribe(data => {
+      this.animales = data;
+    });
   }
 
 }

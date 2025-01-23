@@ -9,16 +9,16 @@
     <ion-row>
       <ion-col>
         <div class="cards-container">
-          <div class="card" *ngFor="let mascota of mascotas; let i = index"> 
+          <div class="card" *ngFor="let x of animales"> 
             <div class="card-image">
-               <ion-img [src]="mascota.imagen" alt="Foto de {{mascota.nombre}}"></ion-img>
+               <ion-img [src]="x.foto_mascota" alt="Foto de {{x.nombre_mascota}}"></ion-img>
             </div>
           <ion-card-header>
-            <ion-card-title>{{ mascota.nombre }}</ion-card-title>
+            <ion-card-title>{{ x.nombre_mascota}}</ion-card-title>
           </ion-card-header>
           <ion-card-content>
-            <ion-button color="light" (click)="modificarMascota(i)">Modificar</ion-button>
-            <ion-button color="medium" (click)="eliminarMascota(i)">Eliminar</ion-button>
+            <ion-button color="light" (click)="modificarMascota(x)">Modificar</ion-button>
+            <ion-button color="medium" (click)="eliminarMascota(x)">Eliminar</ion-button>
           </ion-card-content>
           </div>
          

@@ -231,14 +231,7 @@ export class BdServicioService {
   }
 
   //funcion ara insertar mascota
-  insertarMascota( nombre: string,
-    genero: string,
-    edad: number,
-    unidadEdad: string,
-    foto: any,
-    tieneVacunas: string,
-    vacunas: string,
-    idEspecie: number // Recibe el ID de la especie
+  insertarMascota( nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string, idEspecie: number // Recibe el ID de la especie
   ) {
     this.database.executeSql(
       `INSERT INTO mascotas (nombre_mascota, genero_mascota, edad_mascota, unidad_edad, foto_mascota, vacunas, detalle_vacuna, id_especie) 
@@ -256,6 +249,29 @@ export class BdServicioService {
         console.error(err);
         this.presentAlert('Error', 'No se pudo registrar la mascota.');
       });
+  }
+
+  updateMascota(id_mascota: number,nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string,){
+    this.database.executeSql('UPDATE mascotas SET nombre_mascota =?, genero_mascota =?, edad_mascota =?, unidad_edad =?, foto_mascota =?, vacunas =?, detalle_vacuna =? WHERE id_mascota =?',[nombre,genero,edad,unidadEdad,foto,tieneVacunas,vacunas,id_mascota]).then(res=>{
+      this.presentAlert('Actualizar','Usuario modificado correctamente');
+      //actualizar el observable
+      this.buscarMascotas();
+      //redireccionar
+      this.router.navigate(['/principal-admin']);
+    }).catch(e=>{
+      this.presentAlert('error updateUsuario', JSON.stringify(e));
+    })
+  }
+
+  eliminarMascota(id:number){
+    this.database.executeSql('DELETE FROM mascotas WHERE id_mascota = ?',[id]).then(res=>{
+      this.presentAlert('Eliminar','mascota eliminada correctamente');
+      //actualizar el observable
+      this.buscarMascotas();
+    }).catch(e=>{
+      this.presentAlert('error eliminarMascota', JSON.stringify(e));
+    })
+
   }
   
 
