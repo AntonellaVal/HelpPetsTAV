@@ -36,7 +36,9 @@
     "@ionic/angular": "^8.0.0",
     "cordova-device-accounts-v2": "^2.0.8",
     "cordova-sqlite-storage": "^6.1.0",
+    "install": "^0.13.0",
     "ionicons": "^7.0.0",
+    "npm": "^11.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

@@ -25,6 +25,11 @@
       </ion-item>
       <div *ngIf="errorEdadCampo" class="error-message">La edad es obligatoria.</div>
 
+      <ion-item class="item">
+        <ion-input class="input" label="Genero" labelPlacement="floating" placeholder="Genero"
+          [(ngModel)]="genero"></ion-input>
+      </ion-item>
+
       <div class="centrado">
         <ion-select class="casilla" [(ngModel)]="unidadEdad" label="Edad del animal" labelPlacement="floating">
           <ion-select-option value="días">Días</ion-select-option>
@@ -37,10 +42,11 @@
 
       <!-- Especie del animal -->
       <ion-item class="item">
-        <ion-select class="casilla" [(ngModel)]="genero" label="Especie" labelPlacement="floating">
-          <ion-select-option value="conejo">Conejo</ion-select-option>
-          <ion-select-option value="perro">Perro</ion-select-option>
-          <ion-select-option value="gato">Gato</ion-select-option>
+        <ion-label>Especie</ion-label>
+        <ion-select [(ngModel)]="especieSeleccionada" placeholder="Selecciona una especie">
+          <ion-select-option *ngFor="let especie of especies" [value]="especie.nombre">
+            {{ especie.nombre }}
+          </ion-select-option>
         </ion-select>
       </ion-item>
 

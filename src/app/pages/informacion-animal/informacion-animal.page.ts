@@ -9,18 +9,18 @@ import { Router } from '@angular/router';
 })
 export class InformacionAnimalPage implements OnInit {
 
-  animal: any;
+  animales: any;
 
   constructor(private router: Router) {
     const navigation = this.router.getCurrentNavigation();
-    this.animal = navigation?.extras.state || {};
+    this.animales =  navigation?.extras.state;
   }
 
   adoptar() {
-    if (!this.animal.adoptado) {
-      this.animal.adoptado = true; // Marcamos al animal como adoptado
+    if (!this.animales.adoptado) {
+      this.animales.adoptado = true; // Marcamos al animal como adoptado
       this.router.navigate(['/form-adopcion'], {
-        state: { nombre: this.animal.nombre, imagen: this.animal.imagen },
+        state: { nombre: this.animales.nombre_mascota, imagen: this.animales.foto_mascota},
       });
     }
   }

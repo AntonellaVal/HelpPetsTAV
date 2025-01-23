@@ -68,7 +68,7 @@ export class BdServicioService {
     return this.listaUsuarios.asObservable();
   }
 
-  fetchMascota(): Observable<Usuario[]>{
+  fetchMascota(): Observable<Mascota[]>{
     return this.listaMascotas.asObservable();
   }
 
@@ -231,25 +231,31 @@ export class BdServicioService {
   }
 
   //funcion ara insertar mascota
-  insertarMascota(nombre_mascota: string, genero_mascota:string, edad_mascota:number, unidad_edad:string, foto_mascota:Blob, vacunas:string, detalle_vacuna:string){
+  insertarMascota( nombre: string,
+    genero: string,
+    edad: number,
+    unidadEdad: string,
+    foto: any,
+    tieneVacunas: string,
+    vacunas: string,
+    idEspecie: number // Recibe el ID de la especie
+  ) {
     this.database.executeSql(
-      'INSERT INTO mascotas(nombre_mascota, genero_mascota, edad_mascota, unidad_edad, foto_mascota, vacunas, detalle_vacuna) VALUES(?,?,?,?,?,?,?)',
-      [nombre_mascota, genero_mascota, edad_mascota, unidad_edad, foto_mascota, vacunas, detalle_vacuna]
-    ).then(res => {
-      // Mostrar un mensaje de confirmación
-      this.presentAlert('exitoso', 'mascota guardada con exito');
-      
-      // Actualizar el observable de usuarios
-      this.buscarMascotas();
-  
-      // Redirigir al usuario a la página de login
-      this.router.navigate(['/principal-admin']);
-    }).catch(e => {
-      // Mostrar un mensaje de error si ocurre un problema
-      this.presentAlert('Error', 'mascota no guardada');
-      console.error(e);
-    });
+      `INSERT INTO mascotas (nombre_mascota, genero_mascota, edad_mascota, unidad_edad, foto_mascota, vacunas, detalle_vacuna, id_especie) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      [nombre, genero, edad, unidadEdad, foto, tieneVacunas, vacunas, idEspecie]
+    )
+      .then(() => {
+        this.presentAlert('Éxito', 'Mascota registrada correctamente.');
+        //actualizar el observble de mascotas
+        this.buscarMascotas();
 
+        this.router.navigate(['/principal-admin']);
+      })
+      .catch((err) => {
+        console.error(err);
+        this.presentAlert('Error', 'No se pudo registrar la mascota.');
+      });
   }
   
 

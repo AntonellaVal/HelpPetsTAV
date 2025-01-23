@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { BdServicioService } from 'src/app/services/bd-servicio.service';
 
 @Component({
   selector: 'app-animales-en-adopcion',
@@ -9,33 +10,50 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class AnimalesEnAdopcionPage implements OnInit {
 
-  animales = [
-    { nombre: 'Teodora', imagen: '/assets/teo.jpg', especie: 'conejo', edad: '2 semanas', vacunas: 'no' },
-    { nombre: 'Bolt', imagen: '/assets/perro_cafeynegro.jpg', especie: 'perro', edad: '3 meses', vacunas: 'sí' },
-    { nombre: 'Estrellita', imagen: '/assets/gato_gris.jpg', especie: 'gato', edad: '1 año', vacunas: 'no' },
-    { nombre: 'Atom', imagen: '/assets/atom.jpg', especie: 'gato', edad: '3 año', vacunas: 'no' },
-    { nombre: 'Waton', imagen: '/assets/conejo_waton.jpg', especie: 'conejo', edad: '2 año', vacunas: 'no' },
-    { nombre: 'Colo-Colo', imagen: '/assets/perro_negroyblanco.jpg', especie: 'perro', edad: '2 meses', vacunas: 'no' },
-    { nombre: 'Mishu', imagen: '/assets/gato_naranja.jpg', especie: 'gato', edad: '1 año', vacunas: 'no' },
-    { nombre: 'Sonny', imagen: '/assets/Sonny.jpg', especie: 'conejo', edad: '1 año', vacunas: 'no' },
+  animales: any = [
+    {
+      id_mascota: 0,
+      nombre_mascota: ' ',
+      genero_mascota: ' ',
+      edad_mascota: 0,
+      unidad_edad: ' ',
+      foto_mascota: ' ',
+      vacunas: ' ',
+      detalle_vacuna: ' ',
+      id_especie: ' '
+    },
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private bd: BdServicioService) { }
 
+  //esto hay que modificar
   verDetalles(animal: any) {
     let navigationExtras: NavigationExtras = {
       state: {
-        nombre: animal.nombre,
-        imagen: animal.imagen,
-        especie: animal.especie,
-        edad: animal.edad,
+        id_mascota: animal.id_mascota,
+        nombre_mascota: animal.nombre_mascota,
+        foto_mascota: animal.foto_mascota,
+        genero_mascota: animal.genero_mascota,
+        edad_mascota: animal.edad_mascota,
+        unidad_edad: animal.unidad_edad,
         vacunas: animal.vacunas,
+        detalle_vacuna: animal.detalle_vacuna,
+        nombre_especie: animal.nombre_especie
       },
     };
     this.router.navigate(['/informacion-animal'], navigationExtras);
   }
 
   ngOnInit() {
+     //consultar el estatus de la base de datos
+     this.bd.dbStatus().subscribe(res=>{
+      if(res){
+        //subscribirnos al observable de la lista de usuarios y rellenar mi variable propia
+        this.bd.fetchMascota().subscribe(data=>{
+          this.animales = data;
+        })
+      }
+    })
   }
 
 }

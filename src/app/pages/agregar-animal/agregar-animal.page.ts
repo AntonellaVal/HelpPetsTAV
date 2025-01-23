@@ -19,6 +19,15 @@ export class AgregarAnimalPage implements OnInit {
   foto: any
   tieneVacunas: string = 'no';
   vacunas: string = '';
+  especieSeleccionada: string = ''; // Nombre de la especie seleccionada
+  idEspecie: number = 0; // ID de la especie correspondiente
+
+  // Mapeo entre nombres de especies e IDs
+  especies: { id: number; nombre: string }[] = [
+    { id: 1, nombre: 'Perro' },
+    { id: 2, nombre: 'Gato' },
+    { id: 3, nombre: 'Conejo' },
+  ];
 
   errorEdad: boolean = false;
   errorEdadMessage: string = '';
@@ -28,16 +37,36 @@ export class AgregarAnimalPage implements OnInit {
   errorEdadCampo: boolean = false;
   errorEspecie: boolean = false;
   errorVacunas: boolean = false;
+  errorGenero: boolean = false;
 
   constructor(private alertController: AlertController, private router: Router, private bd: BdServicioService) { }
 
   async guardarAnimal() {
+    const especie = this.especies.find(
+      (e) => e.nombre === this.especieSeleccionada
+    );
+
+    if (especie) {
+      this.idEspecie = especie.id; // Asignar el ID de la especie
+    } else {
+      this.errorEspecie = true;
+      return;
+    }
+
     if (this.validarCampos()) {
-      // Guardar lógica aquí (podría ser enviar al backend)
-      await this.presentAlert('Éxito', 'El animal ha sido creado correctamente.');
-      this.router.navigate(['/principal-admin']); // Redirige a la página principal
+      this.bd.insertarMascota(
+        this.nombre,
+        this.genero,
+        this.edad,
+        this.unidadEdad,
+        this.foto,
+        this.tieneVacunas,
+        this.vacunas,
+        this.idEspecie // Enviar ID de la especie
+      );
     }
   }
+
   takePicture = async () => {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -80,7 +109,12 @@ export class AgregarAnimalPage implements OnInit {
       esValido = false;
     }
 
-    if (!this.genero) {
+    if (!this.genero || (this.genero !== 'macho' && this.genero !== 'hembra')){
+      this.errorGenero = true;
+      esValido = false;
+    }
+
+    if (!this.especieSeleccionada) {
       this.errorEspecie = true;
       esValido = false;
     }
@@ -90,7 +124,7 @@ export class AgregarAnimalPage implements OnInit {
       esValido = false;
     }
 
-    if (!this.nombre || !this.edad || !this.genero || this.tieneVacunas === '') {
+    if (!this.nombre || !this.edad || !this.genero ||!this.especieSeleccionada || this.tieneVacunas === '') {
       this.errorCamposVacios = true;
       esValido = false;
     }
@@ -116,7 +150,6 @@ export class AgregarAnimalPage implements OnInit {
       this.errorEdad = false;
     }
 
-    this.bd.insertarMascota(this.nombre, this.genero, this.edad, this.unidadEdad, this.foto ,this.tieneVacunas,this.vacunas);
     return esValido;
     
   }
