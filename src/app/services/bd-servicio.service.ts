@@ -52,6 +52,8 @@ export class BdServicioService {
   listaUsuarios = new BehaviorSubject([]);
   //observables para manipular los select de mi BD
   listaMascotas = new BehaviorSubject([]);
+  //observables para manipular los select de mi BD
+  listaCuenta = new BehaviorSubject([]);
 
   //observable del status de la BD
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -70,6 +72,10 @@ export class BdServicioService {
 
   fetchMascota(): Observable<Mascota[]>{
     return this.listaMascotas.asObservable();
+  }
+
+  fetchCuenta(): Observable<Usuario[]>{
+    return this.listaCuenta.asObservable();
   }
 
 
@@ -204,6 +210,36 @@ export class BdServicioService {
     });
   }
   
+  buscarCuenta(id_usuario: number) {
+    // Realizamos la consulta a la base de datos
+    this.database.executeSql('SELECT nombre_usuario, apellido_usuario, clave FROM usuarios WHERE id_usuario = ?', [id_usuario])
+      .then(res => {
+        let items: Usuario[] = [];
+        // Creo una lista vacía para almacenar los registros del cursor
+        if (res.rows.length > 0) {
+          // Verificar si el cursor trae registros
+          for (var i = 0; i < res.rows.length; i++) {
+            // Agrego los registros a mi lista vacía usando la clase Usuario
+            items.push({
+              id_usuario: res.rows.item(i).id_usuario,
+              nombre_usuario: res.rows.item(i).nombre_usuario,
+              apellido_usuario: res.rows.item(i).apellido_usuario,
+              correo: res.rows.item(i).correo,
+              clave: res.rows.item(i).clave,
+              fecha_nac: res.rows.item(i).fecha_nac,
+              direccion: res.rows.item(i).direccion,
+              id_rol: res.rows.item(i).id_rol
+            })
+          }
+        }
+        // Actualizar el observable
+      this.listaCuenta.next(items as any);
+      }).catch(e => {
+        this.presentAlert('error buscarCuenta', JSON.stringify(e));
+      });
+    }
+
+
   //funcion para insertar usuarios 
   insertarUsuario(nombre_usuario:string, apellido_usuario:string,correo: string, clave: string){
    // Asignamos el id_rol como 2 para el rol de usuario normal

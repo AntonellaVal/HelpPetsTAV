@@ -52,7 +52,7 @@ export class LoginPage implements OnInit {
     }
 
     // Verificar si el correo y la contraseña corresponden a un usuario normal
-    this.bd.buscarUsuarios().then((usuarios: { correo: string; clave: string }[]) => {
+    this.bd.buscarUsuarios().then((usuarios: { id_usuario: number,correo: string; clave: string }[]) => {
       const usuario = usuarios.find(
         (user: { correo: string; clave: string }) =>
           user.correo === this.email && user.clave === this.password
@@ -60,6 +60,7 @@ export class LoginPage implements OnInit {
   
       if (usuario) {
         this.presentAlert('¡Bienvenido!', 'Te damos la bienvenida a HelpPets');
+        this.bd.buscarCuenta(usuario.id_usuario);
         this.router.navigate(['/animales-en-adopcion']);
       } else {
         this.presentAlert('Error', 'El correo o la contraseña no son correctos');

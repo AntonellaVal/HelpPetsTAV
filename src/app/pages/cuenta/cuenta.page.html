@@ -16,9 +16,9 @@
     <ion-card class="card">
       <img class="imagen" src="assets/foto_usuario.jpg" alt="foto usuario">
 
-        <h2 class="texto2"> Nombre: {{nombre}}</h2>
-        <h2 class="texto2">apellido: {{apellido}}</h2>
-        <h2 class="texto">Correo: {{ email }}</h2>
+        <h2 class="texto2"> Nombre: {{cuenta.nombre_usuario}}</h2>
+        <h2 class="texto2">apellido: {{cuenta.apellido_usuario}}</h2>
+        <h2 class="texto">Correo: {{ cuenta.correo }}</h2>
 
       <div class="botones">
         <ion-button shape="round" class="boton" color="light" (click)="ModificarCuenta()">modificar email</ion-button>

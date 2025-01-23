@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BdServicioService } from 'src/app/services/bd-servicio.service';
 
 @Component({
   selector: 'app-cuenta',
@@ -8,11 +9,10 @@ import { Router } from '@angular/router';
   standalone: false,
 })
 export class CuentaPage implements OnInit {
-  nombre:string = "renata";
-  apellido:string = "correa";
-  email: string = 'rena.correa@gmail.com';
 
-  constructor(private router: Router) { 
+  cuenta: any;
+
+  constructor(private router: Router, private bd: BdServicioService) { 
   }
 
   ModificarCuenta(){
@@ -33,6 +33,15 @@ export class CuentaPage implements OnInit {
 
 
   ngOnInit() {
+    //consultar el estatus de la base de datos
+    this.bd.dbStatus().subscribe(res=>{
+      if(res){
+        //subscribirnos al observable de la lista de usuarios y rellenar mi variable propia
+        this.bd.fetchCuenta().subscribe(data=>{
+          this.cuenta = data;
+        })
+      }
+    })
   }
 
 }
