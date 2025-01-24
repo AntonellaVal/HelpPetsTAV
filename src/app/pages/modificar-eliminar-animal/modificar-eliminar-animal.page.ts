@@ -30,7 +30,7 @@ export class ModificarEliminarAnimalPage implements OnInit {
     //guardar los datos del usuario en una variable de contexto
     let navigationExtras: NavigationExtras = {
       state: {
-        Mascota: x
+        mascotaE: x
       }
     }
 
@@ -51,3 +51,4 @@ export class ModificarEliminarAnimalPage implements OnInit {
   }
 
 }
+

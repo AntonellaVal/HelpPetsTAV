@@ -47,6 +47,7 @@ export class LoginPage implements OnInit {
     }
      // Verificar si es el administrador
      if (this.email === 'admin@helppets.cl' && this.password === 'Admin.123456') {
+      this.bd.buscarMascotas();
       this.router.navigate(['/principal-admin']);
       return;
     }
@@ -60,6 +61,7 @@ export class LoginPage implements OnInit {
   
       if (usuario) {
         this.presentAlert('¡Bienvenido!', 'Te damos la bienvenida a HelpPets');
+        this.bd.buscarMascotas();
         this.bd.buscarCuenta(usuario.id_usuario);
         this.router.navigate(['/animales-en-adopcion']);
       } else {

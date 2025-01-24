@@ -287,7 +287,7 @@ export class BdServicioService {
       });
   }
 
-  updateMascota(id_mascota: number,nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string,){
+  updateMascota(nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string,id_mascota: number){
     this.database.executeSql('UPDATE mascotas SET nombre_mascota =?, genero_mascota =?, edad_mascota =?, unidad_edad =?, foto_mascota =?, vacunas =?, detalle_vacuna =? WHERE id_mascota =?',[nombre,genero,edad,unidadEdad,foto,tieneVacunas,vacunas,id_mascota]).then(res=>{
       this.presentAlert('Actualizar','Usuario modificado correctamente');
       //actualizar el observable
@@ -295,7 +295,7 @@ export class BdServicioService {
       //redireccionar
       this.router.navigate(['/principal-admin']);
     }).catch(e=>{
-      this.presentAlert('error updateUsuario', JSON.stringify(e));
+      this.presentAlert('error updateMascota', JSON.stringify(e));
     })
   }
 
