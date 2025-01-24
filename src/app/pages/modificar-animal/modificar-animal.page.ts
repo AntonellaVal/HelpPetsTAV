@@ -111,7 +111,7 @@ export class ModificarAnimalPage implements OnInit {
   }
 
   guardar(){
-    this.bd.updateMascota(this.animales.nombre_mascota, this.animales.genero_mascota, this.animales.edad_mascota, this.animales.unidad_edad, this.animales.foto_mascota, this.animales.vacunas, this.animales.detalle_vacuna, this.animales.especie);
+    this.bd.updateMascota(this.animales.nombre_mascota, this.animales.genero_mascota, this.animales.edad_mascota, this.animales.unidad_edad, this.animales.foto_mascota, this.animales.vacunas, this.animales.detalle_vacuna, this.animales.id_mascota);
   }
 
   cancelar() {
