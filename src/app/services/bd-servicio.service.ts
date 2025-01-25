@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Usuario } from './usuario';
 import { Mascota } from './mascota';
 import { Router } from '@angular/router';
+import { Adopcion } from './adopcion';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class BdServicioService {
   tablaMascotas: string = "CREATE TABLE IF NOT EXISTS mascotas(id_mascota INTEGER PRIMARY KEY autoincrement, nombre_mascota VARCHAR(20) NOT NULL, genero_mascota VARCHAR(10) NOT NULL, edad_mascota INTEGER NOT NULL, unidad_edad VARCHAR(4) NOT NULL, foto_mascota BLOB, vacunas VARCHAR(2) NOT NULL, detalle_vacuna VARCHAR(250), id_especie INTEGER, FOREIGN KEY(id_especie) REFERENCES especie(id_especie));";
 
   //tabla adopcion 
-  tablaAdopcion: string = "CREATE TABLE IF NOT EXISTS adopcion(id_adopcion INTEGER PRIMARY KEY autoincrement, fecha_adopcion DATE, estatus BOOLEAN, id_usuario INTEGER, id_mascota INTEGER, FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
+  tablaAdopcion: string = "CREATE TABLE IF NOT EXISTS adopciones(id_adopcion INTEGER PRIMARY KEY autoincrement, fecha_adopcion VARCHAR(9), estatus BOOLEAN, id_usuario INTEGER, id_mascota INTEGER, FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
 
   //variables para insert principales o precargados
   //registro rol
@@ -50,10 +51,15 @@ export class BdServicioService {
 
   //observables para manipular los select de mi BD
   listaUsuarios = new BehaviorSubject([]);
+
   //observables para manipular los select de mi BD
   listaMascotas = new BehaviorSubject([]);
+
   //observables para manipular los select de mi BD
   listaCuenta = new BehaviorSubject([]);
+
+  //observables para manipular los select de mi BD
+  listaAdopcion = new BehaviorSubject([]);
 
   //observable del status de la BD
   private isDBReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -76,6 +82,10 @@ export class BdServicioService {
 
   fetchCuenta(): Observable<Usuario[]>{
     return this.listaCuenta.asObservable();
+  }
+
+  fetchAdopcion(): Observable<Usuario[]>{
+    return this.listaAdopcion.asObservable();
   }
 
 
@@ -178,37 +188,6 @@ export class BdServicioService {
         });
     });
   }
-
-  buscarMascotas() {
-    // Retorno del select de la BD en la tabla usuario
-    this.database.executeSql('SELECT m.id_mascota, m.nombre_mascota, m.genero_mascota, m.edad_mascota, m.unidad_edad, m.foto_mascota, m.vacunas, m.detalle_vacuna, e.nombre_especie FROM mascotas m INNER JOIN especie e ON m.id_especie = e.id_especie', []).then(res => {
-      // Creo una lista vacía para almacenar los registros del cursor
-      let items: Mascota[] = [];
-      // Verificar si el cursor trae registros
-      if (res.rows.length > 0) {
-        // Ciclo para recorrer el cursor
-        for (var i = 0; i < res.rows.length; i++) {
-          // Agrego los registros a mi lista vacía usando la clase Usuario
-          items.push({
-            id_mascota: res.rows.item(i).id_mascota,
-            nombre_mascota: res.rows.item(i).nombre_mascota,
-            genero_mascota: res.rows.item(i).genero_mascota,
-            edad_mascota: res.rows.item(i).edad_mascota,
-            unidad_edad: res.rows.item(i).unidad_edad,
-            foto_mascota: res.rows.item(i).foto_mascota,
-            vacunas: res.rows.item(i).vacunas,
-            detalle_vacuna: res.rows.item(i).detalle_vacuna,
-            especie:res.rows.item(i).nombre_especie
-          })
-        }
-      }
-      // Actualizar el observable
-      this.listaMascotas.next(items as any);
-  
-    }).catch(e => {
-      this.presentAlert('error buscarMascotas', JSON.stringify(e));
-    });
-  }
   
   buscarCuenta(id_usuario: number) {
     // Realizamos la consulta a la base de datos
@@ -236,6 +215,79 @@ export class BdServicioService {
       this.listaCuenta.next(items as any);
       }).catch(e => {
         this.presentAlert('error buscarCuenta', JSON.stringify(e));
+      });
+    }
+
+    buscarMascotas() {
+      // Retorno del select de la BD en la tabla usuario
+      this.database.executeSql('SELECT m.id_mascota, m.nombre_mascota, m.genero_mascota, m.edad_mascota, m.unidad_edad, m.foto_mascota, m.vacunas, m.detalle_vacuna, e.nombre_especie FROM mascotas m INNER JOIN especie e ON m.id_especie = e.id_especie', []).then(res => {
+        // Creo una lista vacía para almacenar los registros del cursor
+        let items: Mascota[] = [];
+        // Verificar si el cursor trae registros
+        if (res.rows.length > 0) {
+          // Ciclo para recorrer el cursor
+          for (var i = 0; i < res.rows.length; i++) {
+            // Agrego los registros a mi lista vacía usando la clase Usuario
+            items.push({
+              id_mascota: res.rows.item(i).id_mascota,
+              nombre_mascota: res.rows.item(i).nombre_mascota,
+              genero_mascota: res.rows.item(i).genero_mascota,
+              edad_mascota: res.rows.item(i).edad_mascota,
+              unidad_edad: res.rows.item(i).unidad_edad,
+              foto_mascota: res.rows.item(i).foto_mascota,
+              vacunas: res.rows.item(i).vacunas,
+              detalle_vacuna: res.rows.item(i).detalle_vacuna,
+              especie:res.rows.item(i).nombre_especie
+            })
+          }
+        }
+        // Actualizar el observable
+        this.listaMascotas.next(items as any);
+    
+      }).catch(e => {
+        this.presentAlert('error buscarMascotas', JSON.stringify(e));
+      });
+    }
+
+     //funcion para buscar todos los registros de la tabla adopcion
+     buscarAdopcion() {
+      this.database.executeSql(
+        `SELECT 
+          u.nombre_usuario, 
+          u.apellido_usuario, 
+          u.fecha_nac, 
+          u.telefono, 
+          u.direccion, 
+          a.fecha_adopcion, 
+          a.estatus, 
+          a.id_adopcion, 
+          m.id_mascota, 
+          m.nombre_mascota 
+        FROM usuarios u 
+        INNER JOIN adopciones a ON u.id_usuario = a.id_usuario 
+        INNER JOIN mascotas m ON m.id_mascota = a.id_mascota`,
+        []
+      ).then(res => {
+        let items: Adopcion[] = [];
+        if (res.rows.length > 0) {
+          for (let i = 0; i < res.rows.length; i++) {
+            items.push({
+              usuario_nombre: res.rows.item(i).nombre_usuario,
+              usuario_apellido: res.rows.item(i).apellido_usuario,
+              fecha_nac: res.rows.item(i).fecha_nac,
+              telefono: res.rows.item(i).telefono,
+              direccion: res.rows.item(i).direccion,
+              fecha_adopcion: res.rows.item(i).fecha_adopcion,
+              estatus: res.rows.item(i).estatus,
+              id_adopcion: res.rows.item(i).id_adopcion,
+              id_mascota: res.rows.item(i).id_mascota,
+              mascota_nombre: res.rows.item(i).nombre_mascota
+            });
+          }
+        }
+        this.listaAdopcion.next(items as any);
+      }).catch(e => {
+        this.presentAlert('Error buscarAdopcion', JSON.stringify(e));
       });
     }
 
@@ -287,17 +339,71 @@ export class BdServicioService {
       });
   }
 
-  updateMascota(nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string,id_mascota: number){
-    this.database.executeSql('UPDATE mascotas SET nombre_mascota =?, genero_mascota =?, edad_mascota =?, unidad_edad =?, foto_mascota =?, vacunas =?, detalle_vacuna =? WHERE id_mascota =?',[nombre,genero,edad,unidadEdad,foto,tieneVacunas,vacunas,id_mascota]).then(res=>{
-      this.presentAlert('Actualizar','Usuario modificado correctamente');
-      //actualizar el observable
-      this.buscarMascotas();
-      //redireccionar
-      this.router.navigate(['/principal-admin']);
-    }).catch(e=>{
-      this.presentAlert('error updateMascota', JSON.stringify(e));
+  // Función para insertar una adopción
+insertarAdopcion(
+  idUsuario: number,
+  idMascota: number,
+  fechaAdopcion: string,
+  estatus: string,
+  nombreUsuario: string,
+  apellidoUsuario: string,
+  fechaNac: string,
+  telefono: string,
+  direccion: string
+) {
+  // Actualizar los datos del usuario antes de registrar la adopción
+  this.database.executeSql(
+    `UPDATE usuarios 
+     SET nombre_usuario = ?, apellido_usuario = ?, fecha_nac = ?, telefono = ?, direccion = ?
+     WHERE id_usuario = ?`,
+    [nombreUsuario, apellidoUsuario, fechaNac, telefono, direccion, idUsuario]
+  )
+    .then(() => {
+      // Insertar el registro de adopción
+      return this.database.executeSql(
+        `INSERT INTO adopciones (id_usuario, id_mascota, fecha_adopcion, estatus) 
+         VALUES (?, ?, ?, ?)`,
+        [idUsuario, idMascota, fechaAdopcion, estatus]
+      );
     })
-  }
+    .then(() => {
+      this.presentAlert('Éxito', 'Adopción registrada correctamente.');
+      // Actualizar la lista de adopciones
+      this.buscarAdopcion();
+      // Navegar a la página principal del administrador si aplica
+      this.router.navigate(['/principal-admin']);
+    })
+    .catch((err) => {
+      console.error(err);
+      this.presentAlert('Error', 'No se pudo registrar la adopción.');
+    });
+}
+
+updateMascota(nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string, id_mascota: number, nombreEspecie: string) {
+  // Primero obtener el id_especie de la especie seleccionada
+  this.database.executeSql('SELECT id_especie FROM especie WHERE nombre_especie = ?', [nombreEspecie]).then(res => {
+      if (res.rows.length > 0) {
+          // Si encontramos la especie, obtenemos su id
+          let id_especie = res.rows.item(0).id_especie;
+
+          // Ahora podemos actualizar la mascota con el id_especie obtenido
+          this.database.executeSql('UPDATE mascotas SET nombre_mascota =?, genero_mascota =?, edad_mascota =?, unidad_edad =?, foto_mascota =?, vacunas =?, detalle_vacuna =?, id_especie =? WHERE id_mascota =?',
+              [nombre, genero, edad, unidadEdad, foto, tieneVacunas, vacunas, id_especie, id_mascota]).then(res => {
+                  this.presentAlert('Actualizar', 'Usuario modificado correctamente');
+                  // Actualizar el observable
+                  this.buscarMascotas();
+                  // Redireccionar
+                  this.router.navigate(['/modificar-eliminar-animal']);
+              }).catch(e => {
+                  this.presentAlert('Error en updateMascota', JSON.stringify(e));
+              });
+      } else {
+          this.presentAlert('Error', 'Especie no encontrada');
+      }
+  }).catch(e => {
+      this.presentAlert('Error al obtener especie', JSON.stringify(e));
+  });
+}
 
   eliminarMascota(id:number){
     this.database.executeSql('DELETE FROM mascotas WHERE id_mascota = ?',[id]).then(res=>{

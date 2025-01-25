@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { BdServicioService } from 'src/app/services/bd-servicio.service';
 
 @Component({
   selector: 'app-form-adopcion',
@@ -10,93 +11,112 @@ import { AlertController } from '@ionic/angular';
 })
 export class FormAdopcionPage implements OnInit {
 
-  nombre: string = " ";
-  apellido: string = " ";
-  edad: number = 0;
-  telefono: string = " ";
-  fecha: string = " ";
-  horaSeleccionada: string = '';
+ // Campos obligatorios para la adopción
+ nombreUsuario: string = '';
+ apellidoUsuario: string = '';
+ fechaNac: string = '';
+ telefono: string = '';
+ direccion: string = '';
+ idMascota: number = 0;
+ fechaAdopcion: string = '';
+ estatus: string = 'adoptado'; // Por defecto, la mascota pasa a "adoptado" cuando se registra la adopción
 
-  horasDisponibles: string[] = ['10:00', '11:00', '12:00', '15:00', '16:00'];
+ // Flags para mostrar errores
+ errorNombre: boolean = false;
+ errorApellido: boolean = false;
+ errorFechaNac: boolean = false;
+ errorTelefono: boolean = false;
+ errorDireccion: boolean = false;
+ errorMascota: boolean = false;
 
-  errorNombre: boolean = false;
-  errorApellido: boolean = false;
-  errorEdad: boolean = false;
-  errorTelefono: boolean = false;
-  errorFecha: boolean = false;
-  errorHora: boolean = false;
+ constructor(
+   private alertController: AlertController,
+   private router: Router,
+   private bd: BdServicioService
+ ) {}
 
-  constructor(private alertController: AlertController,  private router: Router) { }
+ async presentAlert(titulo: string, mensaje: string) {
+   const alert = await this.alertController.create({
+     header: titulo,
+     message: mensaje,
+     buttons: ['OK'],
+   });
+   await alert.present();
+ }
 
-  async presentAlert(titulo:string, mensaje:string) {
-    const alert = await this.alertController.create({
-      header: titulo,
-      message: mensaje,
-      buttons: ['OK'],
-    });
+ // Validar los campos obligatorios
+ validarAdopcion() {
+   // Validación del nombre del usuario
+   if (!this.nombreUsuario.match(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,25}$/)) {
+     this.errorNombre = true;
+   } else {
+     this.errorNombre = false;
+   }
 
-    await alert.present();
-  }
+   // Validación del apellido del usuario
+   if (!this.apellidoUsuario.match(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,25}$/)) {
+     this.errorApellido = true;
+   } else {
+     this.errorApellido = false;
+   }
 
-  validarCampos(){
-    const hoy = new Date().toISOString().split('T')[0];
+   // Validación de la fecha de nacimiento
+   if (!this.fechaNac) {
+     this.errorFechaNac = true;
+   } else {
+     this.errorFechaNac = false;
+   }
 
-    let correcto = true;
+   // Validación del teléfono
+   if (!this.telefono.match(/^\d{9,10}$/)) {
+     this.errorTelefono = true;
+   } else {
+     this.errorTelefono = false;
+   }
 
-    // Validación del nombre
-    if (!this.nombre.match(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,25}$/)) {
-      this.errorNombre = true;
-      correcto = false;
-    } else {
-      this.errorNombre = false;
-    }
+   // Validación de la dirección
+   if (this.direccion.trim().length < 5) {
+     this.errorDireccion = true;
+   } else {
+     this.errorDireccion = false;
+   }
 
-    // Validación del apellido
-    if (!this.apellido.match(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,25}$/)) {
-      this.errorApellido = true;
-      correcto = false;
-    } else {
-      this.errorApellido = false;
-    }
+   // Validación del ID de la mascota
+   if (this.idMascota <= 0) {
+     this.errorMascota = true;
+   } else {
+     this.errorMascota = false;
+   }
 
-    // Validación de la edad (mayor de edad)
-    if (this.edad < 18) {
-      this.errorEdad = true;
-      correcto = false;
-    } else {
-      this.errorEdad = false;
-    }
+   // Si no hay errores, insertar la adopción
+   if (
+     !this.errorNombre &&
+     !this.errorApellido &&
+     !this.errorFechaNac &&
+     !this.errorTelefono &&
+     !this.errorDireccion &&
+     !this.errorMascota
+   ) {
+     this.insertarAdopcion();
+   }
+ }
 
-    // Validación del teléfono (debe comenzar con 9 y tener 9 dígitos)
-    if (!this.telefono || !/^[9]\d{8}$/.test(this.telefono.toString())) {
-      this.errorTelefono = true;
-      correcto = false;
-    } else {
-      this.errorTelefono = false;
-    }
-
-    // Validación de la fecha (no puede ser anterior a hoy)
-    if (!this.fecha || this.fecha < hoy) {
-      this.errorFecha = true;
-      correcto = false;
-    } else {
-      this.errorFecha = false;
-    }
-
-    // Validación de la hora seleccionada
-    if (!this.horaSeleccionada) {
-      this.errorHora = true;
-      correcto = false;
-    } else {
-      this.errorHora = false;
-    }
-
-    // Verificación final
-    if (correcto) {
-      this.presentAlert('Éxito', 'Formulario válido. ¡Gracias por completar la adopción!');
-      this.router.navigate(['/animales-en-adopcion']); // Redirige a la página de animales en adopción
-    }
-  }
+ // Insertar adopción
+ insertarAdopcion() {
+   const idUsuario = 1; // Aquí debes usar el ID del usuario autenticado
+   this.bd
+     .insertarAdopcion(
+       idUsuario,
+       this.idMascota,
+       this.fechaAdopcion,
+       this.estatus,
+       this.nombreUsuario,
+       this.apellidoUsuario,
+       this.fechaNac,
+       this.telefono,
+       this.direccion
+     )
+ }
 
   async cancelarAdopcion() {
     const alert = await this.alertController.create({

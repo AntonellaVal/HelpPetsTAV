@@ -104,14 +104,14 @@ export class ModificarAnimalPage implements OnInit {
   validarVacunas() {
     const vacuna = this.animales.vacunas?.toLowerCase();
     if (vacuna !== 'sí' && vacuna !== 'no') {
-      this.errores.vacunas = 'Vacunas debe ser "Sí" o "No".';
+      this.errores.vacunas = 'Vacunas debe ser "si" o "no".';
     } else {
       this.errores.vacunas = '';
     }
   }
 
   guardar(){
-    this.bd.updateMascota(this.animales.nombre_mascota, this.animales.genero_mascota, this.animales.edad_mascota, this.animales.unidad_edad, this.animales.foto_mascota, this.animales.vacunas, this.animales.detalle_vacuna, this.animales.especie);
+    this.bd.updateMascota(this.animales.nombre_mascota, this.animales.genero_mascota, this.animales.edad_mascota, this.animales.unidad_edad, this.animales.foto_mascota, this.animales.vacunas, this.animales.detalle_vacuna, this.animales.id_mascota, this.animales.especie );
   }
 
   cancelar() {
