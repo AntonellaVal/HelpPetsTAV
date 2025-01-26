@@ -11,112 +11,47 @@ import { BdServicioService } from 'src/app/services/bd-servicio.service';
 })
 export class FormAdopcionPage implements OnInit {
 
- // Campos obligatorios para la adopción
- nombreUsuario: string = '';
- apellidoUsuario: string = '';
- fechaNac: string = '';
- telefono: string = '';
- direccion: string = '';
- idMascota: number = 0;
- fechaAdopcion: string = '';
- estatus: string = 'adoptado'; // Por defecto, la mascota pasa a "adoptado" cuando se registra la adopción
+  nombre_usuario: string = '';
+  apellido_usuario: string = '';
+  fecha_nac: string = '';
+  telefono: string = '';
+  direccion: string = '';
+  
+  errorNombre: boolean = false;
+  errorApellido: boolean = false;
+  errorTelefono: boolean = false;
 
- // Flags para mostrar errores
- errorNombre: boolean = false;
- errorApellido: boolean = false;
- errorFechaNac: boolean = false;
- errorTelefono: boolean = false;
- errorDireccion: boolean = false;
- errorMascota: boolean = false;
+  constructor(private alertController: AlertController,  private router: Router, private bd: BdServicioService,) { }
 
- constructor(
-   private alertController: AlertController,
-   private router: Router,
-   private bd: BdServicioService
- ) {}
+  async presentAlert(titulo:string, mensaje:string) {
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK'],
+    });
 
- async presentAlert(titulo: string, mensaje: string) {
-   const alert = await this.alertController.create({
-     header: titulo,
-     message: mensaje,
-     buttons: ['OK'],
-   });
-   await alert.present();
- }
+    await alert.present();
+  }
+// Método para validar los campos
+validarCampos() {
+  this.errorNombre = this.nombre_usuario.length < 3 || this.nombre_usuario.length > 25;
+  this.errorApellido = this.apellido_usuario.length < 3 || this.apellido_usuario.length > 25;
+  this.errorTelefono = !/^(\+56\s)?9\d{8}$/.test(this.telefono); // Validación para el teléfono en formato chileno
 
- // Validar los campos obligatorios
- validarAdopcion() {
-   // Validación del nombre del usuario
-   if (!this.nombreUsuario.match(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,25}$/)) {
-     this.errorNombre = true;
-   } else {
-     this.errorNombre = false;
-   }
+  if (!this.errorNombre && !this.errorApellido && !this.errorTelefono) {
+    // Si los campos son válidos, llamamos a la función para insertar la adopción
+    this.insertarAdopcion();
+  }
+}
 
-   // Validación del apellido del usuario
-   if (!this.apellidoUsuario.match(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,25}$/)) {
-     this.errorApellido = true;
-   } else {
-     this.errorApellido = false;
-   }
+// Método para insertar adopción en la base de datos
+async insertarAdopcion() {
+// Llamamos al servicio para insertar el usuario en la base de datos
 
-   // Validación de la fecha de nacimiento
-   if (!this.fechaNac) {
-     this.errorFechaNac = true;
-   } else {
-     this.errorFechaNac = false;
-   }
+    // Ahora insertamos la adopción
+    await this.bd.insertarAdopcion(this.nombre_usuario, this.apellido_usuario, this.fecha_nac, this.telefono, this.direccion);
 
-   // Validación del teléfono
-   if (!this.telefono.match(/^\d{9,10}$/)) {
-     this.errorTelefono = true;
-   } else {
-     this.errorTelefono = false;
-   }
-
-   // Validación de la dirección
-   if (this.direccion.trim().length < 5) {
-     this.errorDireccion = true;
-   } else {
-     this.errorDireccion = false;
-   }
-
-   // Validación del ID de la mascota
-   if (this.idMascota <= 0) {
-     this.errorMascota = true;
-   } else {
-     this.errorMascota = false;
-   }
-
-   // Si no hay errores, insertar la adopción
-   if (
-     !this.errorNombre &&
-     !this.errorApellido &&
-     !this.errorFechaNac &&
-     !this.errorTelefono &&
-     !this.errorDireccion &&
-     !this.errorMascota
-   ) {
-     this.insertarAdopcion();
-   }
- }
-
- // Insertar adopción
- insertarAdopcion() {
-   const idUsuario = 1; // Aquí debes usar el ID del usuario autenticado
-   this.bd
-     .insertarAdopcion(
-       idUsuario,
-       this.idMascota,
-       this.fechaAdopcion,
-       this.estatus,
-       this.nombreUsuario,
-       this.apellidoUsuario,
-       this.fechaNac,
-       this.telefono,
-       this.direccion
-     )
- }
+}
 
   async cancelarAdopcion() {
     const alert = await this.alertController.create({

@@ -13,17 +13,17 @@
        <h2 class="texto">para poder adoptar necesitamos los siguentes datos:</h2>
 
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su nombre" labelPlacement="floating"  placeholder="nombre" [(ngModel)]="nombreUsuario"></ion-input>
+      <ion-input class="input" label="ingrese su nombre" labelPlacement="floating"  placeholder="nombre" [(ngModel)]="nombre_usuario"></ion-input>
     </ion-item>
     <div *ngIf="errorNombre" class="error-message">El nombre debe tener entre 3 y 25 caracteres.</div>
 
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su apellido" labelPlacement="floating"  placeholder="apellido"[(ngModel)]="apellidoUsuario"></ion-input>
+      <ion-input class="input" label="ingrese su apellido" labelPlacement="floating"  placeholder="apellido"[(ngModel)]="apellido_usuario"></ion-input>
     </ion-item>
     <div *ngIf="errorApellido" class="error-message">El apellido debe tener entre 3 y 25 caracteres.</div>
 
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su fecha de nacimiento" labelPlacement="floating"  placeholder="xx/xx/xxxx" [(ngModel)]="fechaNac"></ion-input>
+      <ion-input class="input" label="ingrese su fecha de nacimiento" labelPlacement="floating"  placeholder="xx/xx/xxxx" [(ngModel)]="fecha_nac"></ion-input>
     </ion-item>
 
     <ion-item class="item">
@@ -40,7 +40,7 @@
 
     <!-- Botones -->
     <div class="botones">
-      <ion-button shape="round" color="light"  (click)="validarAdopcion()">Aceptar</ion-button>
+      <ion-button shape="round" color="light"  (click)="validarCampos()">Aceptar</ion-button>
       <ion-button shape="round" color="medium"  (click)="cancelarAdopcion()">Cancelar</ion-button>
     </div>
     

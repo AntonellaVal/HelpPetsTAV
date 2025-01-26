@@ -22,13 +22,13 @@ export class BdServicioService {
   tablaEspecie: string = "CREATE TABLE IF NOT EXISTS especie(id_especie INTEGER PRIMARY KEY autoincrement, nombre_especie VARCHAR(20) NOT NULL);";
 
   //tabla usuario
-  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(25) NOT NULL, apellido_usuario VARCHAR(25) NOT NULL, correo VARCHAR(50) NOT NULL,clave VARCHAR(16) NOT NULL, fecha_nac INEGER, direccion VARCHAR(50) , telefono VARCHAR(9), id_rol INTEGER, FOREIGN KEY(id_rol) REFERENCES rol(id_rol));";
+  tablaUsuarios: string = "CREATE TABLE IF NOT EXISTS usuarios(id_usuario INTEGER PRIMARY KEY autoincrement, nombre_usuario VARCHAR(25) NOT NULL, apellido_usuario VARCHAR(25) NOT NULL, correo VARCHAR(50) NOT NULL,clave VARCHAR(16) NOT NULL, fecha_nac VARCHAR(10), direccion VARCHAR(50) , telefono VARCHAR(9), id_rol INTEGER, FOREIGN KEY(id_rol) REFERENCES rol(id_rol));";
 
   //tabla mascota
   tablaMascotas: string = "CREATE TABLE IF NOT EXISTS mascotas(id_mascota INTEGER PRIMARY KEY autoincrement, nombre_mascota VARCHAR(20) NOT NULL, genero_mascota VARCHAR(10) NOT NULL, edad_mascota INTEGER NOT NULL, unidad_edad VARCHAR(4) NOT NULL, foto_mascota BLOB, vacunas VARCHAR(2) NOT NULL, detalle_vacuna VARCHAR(250), id_especie INTEGER, FOREIGN KEY(id_especie) REFERENCES especie(id_especie));";
 
   //tabla adopcion 
-  tablaAdopcion: string = "CREATE TABLE IF NOT EXISTS adopciones(id_adopcion INTEGER PRIMARY KEY autoincrement, fecha_adopcion VARCHAR(9), estatus BOOLEAN, id_usuario INTEGER, id_mascota INTEGER, FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
+  tablaAdopcions: string = "CREATE TABLE IF NOT EXISTS tadopciones(id_adopcion INTEGER PRIMARY KEY autoincrement, fecha_adopcion VARCHAR(10), estatus BOOLEAN, id_usuario INTEGER, id_mascota INTEGER, FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),FOREIGN KEY(id_mascota) REFERENCES mascota(id_mascota));";
 
   //variables para insert principales o precargados
   //registro rol
@@ -134,7 +134,7 @@ export class BdServicioService {
       await this.database.executeSql(this.tablaMascotas, []);
 
       //tablas adopcion
-      await this.database.executeSql(this.tablaAdopcion, []);
+      await this.database.executeSql(this.tablaAdopcions, []);
 
       //llamar a las variables de los insert
       //registro rol
@@ -252,22 +252,7 @@ export class BdServicioService {
      //funcion para buscar todos los registros de la tabla adopcion
      buscarAdopcion() {
       this.database.executeSql(
-        `SELECT 
-          u.nombre_usuario, 
-          u.apellido_usuario, 
-          u.fecha_nac, 
-          u.telefono, 
-          u.direccion, 
-          a.fecha_adopcion, 
-          a.estatus, 
-          a.id_adopcion, 
-          m.id_mascota, 
-          m.nombre_mascota 
-        FROM usuarios u 
-        INNER JOIN adopciones a ON u.id_usuario = a.id_usuario 
-        INNER JOIN mascotas m ON m.id_mascota = a.id_mascota`,
-        []
-      ).then(res => {
+        `SELECT u.nombre_usuario, u.apellido_usuario, u.fecha_nac, u.telefono, u.direccion, a.fecha_adopcion, a.estatus, a.id_adopcion, m.id_mascota, m.nombre_mascota FROM usuarios u INNER JOIN tadopciones a ON u.id_usuario = a.id_usuario INNER JOIN mascotas m ON m.id_mascota = a.id_mascota`,[]).then(res => {
         let items: Adopcion[] = [];
         if (res.rows.length > 0) {
           for (let i = 0; i < res.rows.length; i++) {
@@ -318,7 +303,7 @@ export class BdServicioService {
 
   }
 
-  //funcion ara insertar mascota
+  //funcion para insertar mascota
   insertarMascota( nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string, idEspecie: number // Recibe el ID de la especie
   ) {
     this.database.executeSql(
@@ -339,45 +324,46 @@ export class BdServicioService {
       });
   }
 
-  // Función para insertar una adopción
-insertarAdopcion(
-  idUsuario: number,
-  idMascota: number,
-  fechaAdopcion: string,
-  estatus: string,
-  nombreUsuario: string,
-  apellidoUsuario: string,
-  fechaNac: string,
-  telefono: string,
-  direccion: string
-) {
-  // Actualizar los datos del usuario antes de registrar la adopción
-  this.database.executeSql(
-    `UPDATE usuarios 
-     SET nombre_usuario = ?, apellido_usuario = ?, fecha_nac = ?, telefono = ?, direccion = ?
-     WHERE id_usuario = ?`,
-    [nombreUsuario, apellidoUsuario, fechaNac, telefono, direccion, idUsuario]
-  )
-    .then(() => {
-      // Insertar el registro de adopción
-      return this.database.executeSql(
-        `INSERT INTO adopciones (id_usuario, id_mascota, fecha_adopcion, estatus) 
-         VALUES (?, ?, ?, ?)`,
-        [idUsuario, idMascota, fechaAdopcion, estatus]
-      );
-    })
-    .then(() => {
-      this.presentAlert('Éxito', 'Adopción registrada correctamente.');
-      // Actualizar la lista de adopciones
-      this.buscarAdopcion();
-      // Navegar a la página principal del administrador si aplica
-      this.router.navigate(['/principal-admin']);
-    })
-    .catch((err) => {
-      console.error(err);
-      this.presentAlert('Error', 'No se pudo registrar la adopción.');
+  insertarAdopcion(nombre_usuario: string, apellido_usuario: string, fecha_nac: string, telefono: string, direccion: string) {
+    // Se busca el usuario en la base de datos para obtener su id
+    this.database.executeSql(
+      'SELECT id_usuario, telefono, direccion FROM usuarios WHERE nombre_usuario = ? AND apellido_usuario = ?',
+      [nombre_usuario, apellido_usuario]
+    ).then((res) => {
+      if (res.rows.length > 0) {
+        const id_usuario = res.rows.item(0).id_usuario;  // Obtenemos el ID del usuario
+
+        // Ahora, actualizamos los campos de teléfono y dirección en la tabla usuarios
+        this.database.executeSql(
+          'UPDATE usuarios SET telefono = ?, direccion = ? WHERE id_usuario = ?',
+          [telefono, direccion, id_usuario]
+        ).then(() => {
+          // Ahora insertamos la adopción en la tabla tadopciones
+          this.database.executeSql(
+            'INSERT INTO tadopciones(fecha_adopcion, estatus, id_usuario) VALUES(?, 1, ?)',
+            [fecha_nac, id_usuario]
+          ).then(() => {
+            // Mensaje de éxito
+            this.presentAlert('Adopción Exitosa', 'Tu adopción ha sido registrada.');
+            this.router.navigate(['/animales-en-adopcion']);
+            // Aquí debes actualizar el observable `buscarAdopcion`
+            this.buscarAdopcion(); // Asumiendo que buscarAdopcion es un método que actualiza el observable.
+          }).catch((err) => {
+            this.presentAlert('Error al registrar adopción', 'Hubo un problema al registrar tu adopción.');
+            console.error(err);
+          });
+        }).catch((err) => {
+          this.presentAlert('Error al actualizar usuario', 'Hubo un problema al actualizar los datos del usuario.');
+          console.error(err);
+        });
+      } else {
+        this.presentAlert('Error', 'Usuario no encontrado.');
+      }
+    }).catch((err) => {
+      console.error('Error al buscar el usuario:', err);
     });
 }
+
 
 updateMascota(nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string, id_mascota: number, nombreEspecie: string) {
   // Primero obtener el id_especie de la especie seleccionada
