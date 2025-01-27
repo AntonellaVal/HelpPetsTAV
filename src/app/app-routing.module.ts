@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'principal-admin',
+    redirectTo: 'login',
     pathMatch: 'full'
   },
   {

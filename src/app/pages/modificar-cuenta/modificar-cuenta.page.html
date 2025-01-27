@@ -10,15 +10,19 @@
         <ion-input class="input" label="Modificar nombre" labelPlacement="floating"
           placeholder="Ingrese su nuevo nombre" [(ngModel)]="nombre_usuario"></ion-input>
       </ion-item>
+      <div *ngIf="errorNombre" class="error-message">
+        {{ errorNombre }}</div>
       <ion-item class="item">
         <ion-input class="input" label="Modificar apellido" labelPlacement="floating"
-          placeholder="Ingrese su nuevo apellido" [(ngModel)]="nombre_apellido"></ion-input>
+          placeholder="Ingrese su nuevo apellido" [(ngModel)]="apellido_usuario"></ion-input>
       </ion-item>
+      <div *ngIf="errorNombre" class="error-message">
+        {{ errorNombre }}</div>
 
     </div>
 
     <div class="botones">
-      <ion-button shape="round" color="light" (click)="irPerfil()">Confirmar</ion-button>
+      <ion-button shape="round" color="light" (click)="actualizarPerfil()">Confirmar</ion-button>
       <ion-button shape="round" color="medium" (click)="irPerfil()">Cancelar</ion-button>
     </div>
 
