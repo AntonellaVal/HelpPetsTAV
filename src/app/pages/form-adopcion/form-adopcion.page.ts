@@ -10,18 +10,23 @@ import { BdServicioService } from 'src/app/services/bd-servicio.service';
   standalone: false,
 })
 export class FormAdopcionPage implements OnInit {
+  animales: any;
 
   nombre_usuario: string = '';
   apellido_usuario: string = '';
   fecha_nac: string = '';
   telefono: string = '';
   direccion: string = '';
+  id_mascota: number = 0;
   
   errorNombre: boolean = false;
   errorApellido: boolean = false;
   errorTelefono: boolean = false;
 
-  constructor(private alertController: AlertController,  private router: Router, private bd: BdServicioService,) { }
+  constructor(private alertController: AlertController,  private router: Router, private bd: BdServicioService,) { 
+    const navigation = this.router.getCurrentNavigation();
+    this.animales =  navigation?.extras.state;
+  }
 
   async presentAlert(titulo:string, mensaje:string) {
     const alert = await this.alertController.create({
@@ -49,7 +54,7 @@ async insertarAdopcion() {
 // Llamamos al servicio para insertar el usuario en la base de datos
 
     // Ahora insertamos la adopción
-    await this.bd.insertarAdopcion(this.nombre_usuario, this.apellido_usuario, this.fecha_nac, this.telefono, this.direccion);
+    await this.bd.insertarAdopcion(this.nombre_usuario, this.apellido_usuario, this.fecha_nac,this.telefono, this.direccion, this.animales.id_mascota);
 
 }
 

@@ -24,10 +24,11 @@
       <p><strong>vacunas:</strong> {{ animales.vacunas === 'si' ? 'Sí' : 'No' }}</p>
       <p><strong>Detalle de Vacunas:</strong> {{ animales.detalle_vacuna }}</p>
 
-      <p *ngIf="animales.adoptado" style="color: red;">¡Este animal ya ha sido adoptado!</p>
     </div>
+    
     <div class="botones">
-      <ion-button shape="round" color="light"  [disabled]="animales.adoptado" (click)="adoptar()">adoptar</ion-button>
+      <ion-button shape="round" color="light" [disabled]="mascotaAdoptada"  (click)="adoptar()">adoptar</ion-button>
+      <p *ngIf="mascotaAdoptada" class="text-adoptada">Esta mascota ya está adoptada.</p>
       <ion-button shape="round" color="medium"  (click)="volver()">volver</ion-button>
     </div>
 

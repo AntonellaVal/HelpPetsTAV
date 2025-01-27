@@ -324,15 +324,15 @@ export class BdServicioService {
       });
   }
 
-  insertarAdopcion(nombre_usuario: string, apellido_usuario: string, fecha_nac: string, telefono: string, direccion: string) {
+
+  insertarAdopcion(nombre_usuario: string, apellido_usuario: string, fecha_nac: string, telefono: string, direccion: string, id_mascota:number) {
     // Se busca el usuario en la base de datos para obtener su id
     this.database.executeSql(
-      'SELECT id_usuario, telefono, direccion FROM usuarios WHERE nombre_usuario = ? AND apellido_usuario = ?',
+      'SELECT id_usuario,fecha_nac telefono, direccion FROM usuarios WHERE nombre_usuario = ? AND apellido_usuario = ?',
       [nombre_usuario, apellido_usuario]
     ).then((res) => {
       if (res.rows.length > 0) {
         const id_usuario = res.rows.item(0).id_usuario;  // Obtenemos el ID del usuario
-
         // Ahora, actualizamos los campos de teléfono y dirección en la tabla usuarios
         this.database.executeSql(
           'UPDATE usuarios SET telefono = ?, direccion = ? WHERE id_usuario = ?',
@@ -340,14 +340,15 @@ export class BdServicioService {
         ).then(() => {
           // Ahora insertamos la adopción en la tabla tadopciones
           this.database.executeSql(
-            'INSERT INTO tadopciones(fecha_adopcion, estatus, id_usuario) VALUES(?, 1, ?)',
-            [fecha_nac, id_usuario]
+            'INSERT INTO tadopciones(fecha_adopcion, estatus, id_usuario, id_mascota) VALUES(?, 1, ?, ?)',
+            [fecha_nac, id_usuario, id_mascota]
           ).then(() => {
             // Mensaje de éxito
             this.presentAlert('Adopción Exitosa', 'Tu adopción ha sido registrada.');
             this.router.navigate(['/animales-en-adopcion']);
             // Aquí debes actualizar el observable `buscarAdopcion`
             this.buscarAdopcion(); // Asumiendo que buscarAdopcion es un método que actualiza el observable.
+            this.actualizarEstatusMascota(id_mascota);
           }).catch((err) => {
             this.presentAlert('Error al registrar adopción', 'Hubo un problema al registrar tu adopción.');
             console.error(err);
@@ -364,6 +365,18 @@ export class BdServicioService {
     });
 }
 
+actualizarEstatusMascota(id_mascota: number): Promise<boolean> {
+  return this.database.executeSql(
+    'SELECT estatus FROM tadopciones WHERE id_mascota = ? AND estatus = 1',
+    [id_mascota]
+  ).then((res) => {
+    // Si hay registros con estatus = 1, significa que está adoptada
+    return res.rows.length > 0;
+  }).catch((err) => {
+    console.error('Error al verificar el estatus de adopción:', err);
+    throw err; // Propagamos el error para manejarlo en el componente si es necesario
+  });
+}
 
 updateMascota(nombre: string, genero: string, edad: number, unidadEdad: string, foto: any, tieneVacunas: string, vacunas: string, id_mascota: number, nombreEspecie: string) {
   // Primero obtener el id_especie de la especie seleccionada
