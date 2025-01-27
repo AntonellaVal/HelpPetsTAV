@@ -6,34 +6,37 @@
 
 <ion-content [fullscreen]="true">
   <ion-card class="card">
-    <ion-card-header>
-      <ion-card-title>Modificar Mascota</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item class="item">
-        <ion-input class="input" label="Nombre" labelPlacement="floating" placeholder="Nombre"
-          [(ngModel)]="animales.nombre_mascota"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Especie</ion-label>
-        <ion-select class="input" [(ngModel)]="animales.especie">
-          <ion-select-option value="perro">perro</ion-select-option>
-          <ion-select-option value="gato">gato</ion-select-option>
-          <ion-select-option value="conejo">conejo</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <ion-item class="item">
-        <ion-input class="casilla" [(ngModel)]="animales.edad_mascota" label="Edad del animal" type="number" min="0"
-          step="1" placeholder="Edad del animal"></ion-input>
-      </ion-item>
+    <div class="centrado1">
+      <ion-card-header>
+        <ion-card-title>Modificar Mascota</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="item">
+          <ion-input class="input" label="Nombre" labelPlacement="floating" placeholder="Nombre"
+            [(ngModel)]="animales.nombre_mascota"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Especie</ion-label>
+          <ion-select class="casilla" [(ngModel)]="animales.especie">
+            <ion-select-option value="perro">perro</ion-select-option>
+            <ion-select-option value="gato">gato</ion-select-option>
+            <ion-select-option value="conejo">conejo</ion-select-option>
+          </ion-select>
+        </ion-item>
 
-      <ion-item>
-        <ion-select class="casilla" [(ngModel)]="animales.unidad_edad" label="Edad del animal" labelPlacement="floating">
-          <ion-select-option value="días">Días</ion-select-option>
-          <ion-select-option value="semanas">meses</ion-select-option>
-          <ion-select-option value="años">Años</ion-select-option>
-        </ion-select>
-      </ion-item>
+        <ion-item class="item">
+          <ion-input class="input" [(ngModel)]="animales.edad_mascota" label="Edad del animal" type="number" min="0"
+            step="1" placeholder="Edad del animal"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-select class="casilla" [(ngModel)]="animales.unidad_edad" label="Edad del animal"
+            labelPlacement="floating">
+            <ion-select-option value="días">Días</ion-select-option>
+            <ion-select-option value="semanas">meses</ion-select-option>
+            <ion-select-option value="años">Años</ion-select-option>
+          </ion-select>
+        </ion-item>
 
         <ion-item class="item">
           <ion-input class="input" label="Genero" labelPlacement="floating" placeholder="Genero"
@@ -46,17 +49,26 @@
             <ion-select-option value="no">No</ion-select-option>
           </ion-select>
         </ion-item>
-  
+
         <ion-item *ngIf="animales.vacunas === 'si'" class="item">
-          <ion-input class="input" label="Detalle de Vacunas" labelPlacement="floating" placeholder="Ingrese las vacunas"
-            [(ngModel)]="animales.detalle_vacuna"></ion-input>
+          <ion-input class="input" label="Detalle de Vacunas" labelPlacement="floating"
+            placeholder="Ingrese las vacunas" [(ngModel)]="animales.detalle_vacuna"></ion-input>
         </ion-item>
 
-        <ion-button (click)="takePicture()">Tomar una Foto</ion-button>
-      <img [src]="animales.foto_mascota" alt="Sin foto" *ngIf="animales.foto_mascota">
+        <div class="centrado1">
+          <img class="imagen" [src]="animales.foto_mascota" alt="Sin foto" *ngIf="animales.foto_mascota">
+          <ion-button shape="round" color="light" class="boton" (click)="takePicture()">Tomar una Foto</ion-button>
+        </div>
 
-      <ion-button color="light" expand="block" (click)="guardar()">Guardar</ion-button>
-      <ion-button color="medium" expand="block" (click)="cancelar()">Cancelar</ion-button>
-    </ion-card-content>
+
+        <div class="botones">
+          <ion-button color="light" expand="block" (click)="guardar()">Guardar</ion-button>
+          <ion-button color="medium" expand="block" (click)="cancelar()">Cancelar</ion-button>
+        </div>
+
+      </ion-card-content>
+
+    </div>
+
   </ion-card>
 </ion-content>

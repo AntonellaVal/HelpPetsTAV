@@ -8,25 +8,27 @@
     <ion-content>
       <ion-menu-toggle>
         <img class="imagen" src="assets/logo_helppets.png" alt="logo HelpPets">
-        <ion-list>
-        <ion-item [routerDirection]="'root'" [routerLink]="['/animales-en-adopcion']">
-           <ion-label>Animales en adopcion</ion-label>
-        </ion-item>
-        
-        <ion-item [routerDirection]="'root'" [routerLink]="['/contacto']">
-          <ion-label>Contacto</ion-label>
-        </ion-item>
+        <ion-list class="lista-transparente">
 
-        <ion-item [routerDirection]="'root'" [routerLink]="['/cuenta']">
-          <ion-label>Perfil</ion-label>
-        </ion-item>
-      </ion-list>
+          <ion-item [routerDirection]="'root'" [routerLink]="['/animales-en-adopcion']">
+            <ion-icon name="paw-outline" slot="start"></ion-icon><ion-label > Animales en adopcion</ion-label>
+            
+          </ion-item>
 
-      <ion-item [routerDirection]="'root'" [routerLink]="['/animales-adoptados-api']">
-        <ion-label>Informacion Externa</ion-label>
-     </ion-item>
+          <ion-item [routerDirection]="'root'" [routerLink]="['/cuenta']">
+            <ion-icon name="person-circle" slot="start"></ion-icon><ion-label>Perfil</ion-label>
+          </ion-item>
+          <ion-item [routerDirection]="'root'" [routerLink]="['/contacto']">
+            <ion-icon name="call-outline" slot="start"></ion-icon><ion-label>Contacto</ion-label>
+          </ion-item>
+
+          <ion-item [routerDirection]="'root'" [routerLink]="['/animales-adoptados-api']">
+            <ion-icon name="heart-outline" slot="start"></ion-icon><ion-label>Animales adoptados</ion-label>
+          </ion-item>
+
+        </ion-list>
       </ion-menu-toggle>
-      
+
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="mein-content"></ion-router-outlet>

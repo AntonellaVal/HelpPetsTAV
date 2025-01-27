@@ -24,7 +24,7 @@ export class ModificarAnimalPage implements OnInit {
     this.activedrouter.queryParams.subscribe(res=>{
       if(this.router.getCurrentNavigation()?.extras.state){        
         this.animales = this.router.getCurrentNavigation()?.extras?.state?.['mascotaE'];
-        this.bd.presentAlert("dd",this.animales.especie+"");
+        // this.bd.presentAlert("dd",this.animales.especie+"");
         //this.bd.presentAlert("dd",this.animales.nombre_especie+"");
       }
     })

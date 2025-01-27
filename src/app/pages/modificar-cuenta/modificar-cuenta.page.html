@@ -1,27 +1,24 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>modificar Correo</ion-title>
-  </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
   <div class="centrado">
-    <h1>Modificar Usuario</h1>
+    <h1>Modificar perfil</h1>
     <div class="centradoImput">
       <ion-item class="item">
-        <ion-input class="input" label="Modificar correo" labelPlacement="floating"
-          placeholder="Ingrese su nuevo correo" [(ngModel)]="email"></ion-input>
+        <ion-input class="input" label="Modificar nombre" labelPlacement="floating"
+          placeholder="Ingrese su nuevo nombre" [(ngModel)]="nombre_usuario"></ion-input>
+      </ion-item>
+      <ion-item class="item">
+        <ion-input class="input" label="Modificar apellido" labelPlacement="floating"
+          placeholder="Ingrese su nuevo apellido" [(ngModel)]="nombre_apellido"></ion-input>
       </ion-item>
 
-      <ion-text color="danger" class="error-message" *ngIf="email && !esCorreoValido()" style="text-align: center;">
-        El correo debe terminar en gmail.com, gmail.cl o hotmail.com.
-      </ion-text>
     </div>
 
     <div class="botones">
-      <ion-button shape="round" color="light" (click)="irPerfil()"
-        [disabled]="!email || !esCorreoValido()">Confirmar</ion-button>
+      <ion-button shape="round" color="light" (click)="irPerfil()">Confirmar</ion-button>
       <ion-button shape="round" color="medium" (click)="irPerfil()">Cancelar</ion-button>
     </div>
 

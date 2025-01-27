@@ -25,11 +25,6 @@
       </ion-item>
       <div *ngIf="errorEdadCampo" class="error-message">La edad es obligatoria.</div>
 
-      <ion-item class="item">
-        <ion-input class="input" label="Genero" labelPlacement="floating" placeholder="Genero"
-          [(ngModel)]="genero"></ion-input>
-      </ion-item>
-
       <div class="centrado">
         <ion-select class="casilla" [(ngModel)]="unidadEdad" label="Edad del animal" labelPlacement="floating">
           <ion-select-option value="días">Días</ion-select-option>
@@ -39,11 +34,15 @@
         <div *ngIf="errorEdad" class="error-message">{{ errorEdadMessage }}</div>
       </div>
 
+      <ion-item class="item">
+        <ion-input class="input" label="Genero" labelPlacement="floating" placeholder="Genero"
+          [(ngModel)]="genero"></ion-input>
+      </ion-item>
 
       <!-- Especie del animal -->
+      <ion-label class="texto">Especie</ion-label>
       <ion-item class="item">
-        <ion-label>Especie</ion-label>
-        <ion-select [(ngModel)]="especieSeleccionada" placeholder="Selecciona una especie">
+        <ion-select class="casilla" [(ngModel)]="especieSeleccionada" placeholder="Selecciona una especie">
           <ion-select-option *ngFor="let especie of especies" [value]="especie.nombre">
             {{ especie.nombre }}
           </ion-select-option>
@@ -70,9 +69,9 @@
 
       <div *ngIf="errorCamposVacios" class="error-message">Todos los campos son obligatorios.</div>
 
-      <ion-button (click)="takePicture()">Tomar una Foto</ion-button>
-      <img [src]="foto" alt="Sin foto" *ngIf="foto">
-
+      <img class="imagen" [src]="foto" alt="Sin foto" *ngIf="foto">
+      <ion-button shape="round" color="light" class="boton" (click)="takePicture()">Tomar una Foto</ion-button>
+      
       <!-- Botones -->
       <div class="botones">
         <ion-button shape="round" color="light" (click)="guardarAnimal()">Guardar</ion-button>

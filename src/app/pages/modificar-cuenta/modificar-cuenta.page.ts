@@ -11,13 +11,9 @@ export class ModificarCuentaPage implements OnInit {
 
   constructor(private router: Router) { }
 
-  email: string = "";
+  nombre_usuario: string = "";
+  nombre_apellido: string = "";
 
-  esCorreoValido(): boolean {
-    const dominiosPermitidos = ['@gmail.com', '@gmail.cl', '@hotmail.com'];
-    return dominiosPermitidos.some(dominio => this.email.endsWith(dominio));
-  }
-  
   irPerfil(){
     let correcto = true;
 

@@ -10,13 +10,21 @@ ion-content{
 
 .card{
     background-color: #EBEEFC;
- 
+    border: 1px solid black;
  }
+
+ .imagen {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+}
 
 .texto{
     font-size: 18px;
     width:  87%;
 }
+
 .centradoImput{
     display: flex;
     justify-content: center;
@@ -52,9 +60,15 @@ ion-content{
     height: 50px;
 }
 
+
+
 .botones{
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.boton{
+    margin-top: 20px;
 }
 
 .error-message{

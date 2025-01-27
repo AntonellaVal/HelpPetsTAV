@@ -24,6 +24,7 @@ ion-content{
     max-width: 150px; // Tamaño máximo para las cards
     text-align: center;
     transition: transform 0.2s ease-in-out;
+    border: 1px solid black;
   
     &:hover {
       transform: scale(1.05);

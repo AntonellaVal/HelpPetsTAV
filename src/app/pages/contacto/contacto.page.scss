@@ -1,5 +1,5 @@
 ion-content{
-    --background: url('/assets/fondo_alter.jpg') no-repeat center center / cover; 
+    --background: url('/assets/fondo_app.jpg') no-repeat center center / cover; 
     display: flex;
     flex-direction: column;
     justify-content: flex-start; // Asegura que el contenido se coloque desde la parte superior
@@ -10,4 +10,8 @@ ion-content{
 
 .titulo{
     text-align: center;
+}
+
+ion-card{
+    border: 1px solid black;
 }

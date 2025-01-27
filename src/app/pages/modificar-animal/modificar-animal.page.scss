@@ -17,7 +17,39 @@ ion-content{
 
 .card{
    background-color: #e6edff;
+   border: 1px solid black;
+}
 
+.imagen {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+}
+
+.texto{
+    font-size: 18px;
+    width:  87%;
+}
+
+.centradoImput{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.centrado{
+    width: 90%;
+}
+
+.casilla{
+    width: 100%; 
+    margin-top: 20px;
+    --background: white;
+    --border-radius: 10px;
+    --padding-start: 10px;
+    height: 50px;
 }
 
 .item{
@@ -33,4 +65,16 @@ ion-content{
     --border-radius: 10px;
     --padding-start: 10px;
     height: 50px;
+}
+
+.boton{
+    margin-top: 20px;
+}
+.centrado1{
+    text-align: center;
+}
+
+.botones{
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

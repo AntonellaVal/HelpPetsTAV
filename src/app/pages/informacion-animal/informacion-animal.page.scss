@@ -25,7 +25,7 @@ ion-content {
 
 .card {
     background-color: #e6edff;
-
+    border: 1px solid black;
 }
 
 .imagen {
@@ -43,66 +43,3 @@ ion-content {
     margin-top: 20px;
     margin-bottom: 20px;
 }
-// .animal-info-container {
-//     padding: 16px;
-//     text-align: center;
-
-//     h1 {
-//       font-size: 24px;
-//       margin-bottom: 16px;
-//     }
-
-//     .animal-image {
-//       width: 100%;
-//       max-width: 300px;
-//       margin: 0 auto;
-//       overflow: hidden;
-//       border-radius: 10px;
-
-//       img {
-//         width: 100%;
-//         height: auto;
-//         object-fit: cover;
-//       }
-//     }
-
-//     .animal-details {
-//       margin-top: 16px;
-//       font-size: 16px;
-//       background: #e0e0ff;
-//       padding: 16px;
-//       border-radius: 10px;
-
-//       p {
-//         margin: 4px 0;
-//       }
-//     }
-
-//     .animal-actions {
-//       margin-top: 16px;
-
-//       button {
-//         padding: 10px 16px;
-//         margin: 4px;
-//         border: none;
-//         border-radius: 5px;
-//         font-size: 14px;
-//         cursor: pointer;
-//       }
-
-//       .adoptar-btn {
-//         background-color: #ffffff;
-//         color: rgb(0, 0, 0);
-//       }
-
-//       .volver-btn {
-//         background-color: #f48fb1;
-//         color: white;
-//       }
-
-//       button:disabled {
-//         background-color: #cfd8dc;
-//         cursor: not-allowed;
-//       }
-//     }
-//   }
