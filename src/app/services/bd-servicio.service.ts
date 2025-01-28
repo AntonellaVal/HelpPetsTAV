@@ -191,7 +191,7 @@ export class BdServicioService {
 
   buscarCuenta(id_usuario: number) {
     // Realizamos la consulta a la base de datos
-    this.database.executeSql('SELECT nombre_usuario, apellido_usuario, correo FROM usuarios WHERE id_usuario = ?', [id_usuario])
+    this.database.executeSql('SELECT * FROM usuarios WHERE id_usuario = ?', [id_usuario])
       .then(res => {
         let items: Usuario[] = [];
         // Creo una lista vacía para almacenar los registros del cursor
@@ -209,8 +209,11 @@ export class BdServicioService {
               direccion: res.rows.item(i).direccion,
               id_rol: res.rows.item(i).id_rol
             })
+
+            this.presentAlert("eee",id_usuario.toString()+res.rows.item(i).clave);
           }
         }
+        
         // Actualizar el observable
         this.listaCuenta.next(items as any);
       }).catch(e => {
@@ -436,6 +439,20 @@ export class BdServicioService {
         });
     });
   }
+
+  updateContra(id_usuario: number, clave: string): Promise<any>{
+    this.presentAlert("hhh: ",id_usuario+"-"+clave);
+    return this.database.executeSql('UPDATE usuarios SET clave = ? WHERE id_usuario = ?', [clave, id_usuario]).then(res=>{
+     this.presentAlert('Actualizar','Contraseña modificada correctamente');
+     //actualizar el observable
+     this.buscarCuenta(id_usuario);
+     //redireccionar
+     this.router.navigate(['/cuenta']);
+   }).catch(e=>{
+     this.presentAlert('error updateContra', JSON.stringify(e));
+   })
+ }
+  
 }
 
 

@@ -9,14 +9,11 @@
 
   <div class="centradoImput">
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su correo" labelPlacement="floating" placeholder="correo" [(ngModel)]="correo"></ion-input>
+      <ion-input class="input" label="ingrese su contraseña" labelPlacement="floating" placeholder="contraseña" [(ngModel)]="contra"></ion-input>
     </ion-item>
-    <div *ngIf="errorCorreo" class="error-message">
-      El correo electrónico no es válido.
-    </div>
 
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su contraseña" labelPlacement="floating" placeholder="contraseña" [(ngModel)]="contra">
+      <ion-input class="input" label="ingrese su contraseña Nueva" labelPlacement="floating" placeholder="contraseña" [(ngModel)]="contraNueva">
       <ion-input-password-toggle slot="end" class="centradoOjo" color="medium"></ion-input-password-toggle>
       </ion-input>
     </ion-item>

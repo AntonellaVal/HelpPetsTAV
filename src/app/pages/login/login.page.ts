@@ -62,6 +62,7 @@ export class LoginPage implements OnInit {
       if (usuario) {
         this.presentAlert('¡Bienvenido!', 'Te damos la bienvenida a HelpPets');
         this.bd.buscarMascotas();
+        this.presentAlert("hh",usuario.id_usuario.toString());
         this.bd.buscarCuenta(usuario.id_usuario);
         localStorage.setItem('id_usuario', usuario.id_usuario.toString());
         this.router.navigate(['/animales-en-adopcion']);
