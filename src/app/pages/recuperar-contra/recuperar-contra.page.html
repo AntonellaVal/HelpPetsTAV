@@ -1,0 +1,31 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Recuperacion de Contraseña</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card>
+    <ion-item>
+      <ion-select label="ingrese su pregunta" label-placement="floating" placeholder="pregunta" [(ngModel)]="pregunta">
+        <ion-select-option value="nombre">cual es su nombre</ion-select-option>
+        <ion-select-option value="apellido">cual es su apellido</ion-select-option>
+        <ion-select-option value="correo">cual es su correo</ion-select-option>
+      </ion-select>
+    </ion-item>
+  
+  
+    <ion-item>
+      <ion-input  label="ingrese su respuesta" labelPlacement="floating" placeholder="respuesta"
+        [(ngModel)]="respuesta">
+  
+      </ion-input>
+    </ion-item>
+  </ion-card>
+
+  <div class="centradoBoton">
+    <ion-button shape="round" class="boton" color="light" (click)="buscarContrasena()">Enviar</ion-button>
+  <ion-button shape="round" class="boton" color="medium" (click)="IrLogin()">Volver</ion-button>
+  </div>
+  
+</ion-content>

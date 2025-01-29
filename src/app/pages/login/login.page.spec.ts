@@ -21,7 +21,7 @@ describe('LoginPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('Debería devolver false si el email no termina en @gmail.com, @gmail.cl o @hotmail.com', () => { 
+  it('Debería devolver false si el email no termina en @gmail.com, @gmail.cl o @helppets', () => { 
     const resultado = component.validateEmail('usuario@asdasd.asd');  // Email no válido
     expect(resultado).toBeFalse();
   });

@@ -15,6 +15,8 @@ export class RegistroPage implements OnInit {
   correo:string="";
   contra:string="";
   confirmarContra:string="";
+  pregunta: string = '';
+  respuesta: string = '';
 
 
   errorNombre: boolean = false;
@@ -88,7 +90,7 @@ export class RegistroPage implements OnInit {
       this.esContraValida() &&
       !this.errorConfirmarContra
     ) {
-      this.bd.insertarUsuario(this.nombre, this.apellido, this.correo, this.contra);
+      this.bd.insertarUsuario(this.nombre, this.apellido, this.correo, this.contra, this.pregunta, this.respuesta);
     }
   }
 

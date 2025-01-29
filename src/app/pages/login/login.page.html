@@ -15,14 +15,18 @@
       </ion-item>
 
       <ion-item class="item">
-        <ion-input class="input" label="ingrese su contraseña" labelPlacement="floating" placeholder="contraseña" [(ngModel)]="password"></ion-input>
+        <ion-input class="input" label="ingrese su contraseña" labelPlacement="floating" placeholder="contraseña" [(ngModel)]="password" type="password">
+          <ion-input-password-toggle slot="end" class="centradoOjo" color="medium"></ion-input-password-toggle>
+        </ion-input>
       </ion-item>
+
       
     </div>
     
 
     <ion-button shape="round" class="boton" color="light" (click)="irARegistro()" >Registrarse</ion-button>
     <ion-button shape="round" class="boton" color="medium" (click)="login()">Iniciar sesión</ion-button>
+    <ion-button shape="round" class="boton" color="medium" (click)="recuperar()">recuperar contraseña</ion-button>
   </div>
   
 </ion-content>

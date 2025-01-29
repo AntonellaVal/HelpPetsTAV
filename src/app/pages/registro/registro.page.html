@@ -7,29 +7,33 @@
 
   <div class="centradoImput">
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su nombre" labelPlacement="floating" color="secondary" placeholder="nombre"[(ngModel)]="nombre"></ion-input>
+      <ion-input class="input" label="ingrese su nombre" labelPlacement="floating" color="secondary"
+        placeholder="nombre" [(ngModel)]="nombre"></ion-input>
     </ion-item>
-      <div *ngIf="errorNombre" class="error-message">
-        El nombre debe tener entre 3 y 25 caracteres.
-      </div>
+    <div *ngIf="errorNombre" class="error-message">
+      El nombre debe tener entre 3 y 25 caracteres.
+    </div>
 
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su apellido" labelPlacement="floating" color="secondary" placeholder="apellido" [(ngModel)]="apellido"></ion-input>
+      <ion-input class="input" label="ingrese su apellido" labelPlacement="floating" color="secondary"
+        placeholder="apellido" [(ngModel)]="apellido"></ion-input>
     </ion-item>
     <div *ngIf="errorApellido" class="error-message">
       El apellido debe tener entre 3 y 25 caracteres.
     </div>
 
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su correo" labelPlacement="floating" placeholder="correo" [(ngModel)]="correo"></ion-input>
+      <ion-input class="input" label="ingrese su correo" labelPlacement="floating" placeholder="correo"
+        [(ngModel)]="correo"></ion-input>
     </ion-item>
     <div *ngIf="errorCorreo" class="error-message">
       El correo electrónico no es válido.
     </div>
 
     <ion-item class="item">
-      <ion-input class="input" label="ingrese su contraseña" labelPlacement="floating" placeholder="contraseña" [(ngModel)]="contra">
-      <ion-input-password-toggle slot="end" class="centradoOjo" color="medium"></ion-input-password-toggle>
+      <ion-input class="input" label="ingrese su contraseña" labelPlacement="floating" placeholder="contraseña"
+        [(ngModel)]="contra" type="password">
+        <ion-input-password-toggle slot="end" class="centradoOjo" color="medium"></ion-input-password-toggle>
       </ion-input>
     </ion-item>
 
@@ -38,22 +42,40 @@
     </div>
 
     <div *ngIf="contra && !esContraValida()" class="error-message-contra">
-      La contraseña debe tener al menos 8 caracteres, una mayuscula, un número y un caracter especial para que la contraseña sea vlida.
+      La contraseña debe tener al menos 8 caracteres, una mayuscula, un número y un caracter especial para que la
+      contraseña sea vlida.
     </div>
 
     <ion-item class="item">
-      <ion-input class="input" label="confirme su contraseña" labelPlacement="floating" placeholder="contraseña"[(ngModel)]="confirmarContra">
+      <ion-input class="input" label="confirme su contraseña" labelPlacement="floating" placeholder="contraseña"
+        [(ngModel)]="confirmarContra" type="password">
         <ion-input-password-toggle slot="end" class="centradoOjo" color="medium"></ion-input-password-toggle>
       </ion-input>
     </ion-item>
     <div *ngIf="errorConfirmarContra" class="error-message">
       Las contraseñas no coinciden.
     </div>
+    
+    <ion-item class="item">
+      <ion-select label="ingrese su pregunta" label-placement="floating" placeholder="pregunta" [(ngModel)]="pregunta">
+        <ion-select-option value="apple">cual es su nombre</ion-select-option>
+        <ion-select-option value="banana">cual es su apellido</ion-select-option>
+        <ion-select-option value="orange">cual es su correo</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
+    <ion-item class="item">
+      <ion-input class="input" label="ingrese su respuesta" labelPlacement="floating" placeholder="respuesta"
+        [(ngModel)]="respuesta">
+
+      </ion-input>
+    </ion-item>
   </div>
-  
+
   <div class="centradoBoton">
-    <ion-button shape="round" class="boton" color="light"(click)="validarRegistro()">Registrarse</ion-button>
+    <ion-button shape="round" class="boton" color="light" (click)="validarRegistro()">Registrarse</ion-button>
     <ion-button shape="round" class="boton" color="medium" [routerLink]="['/login']">cancelar</ion-button>
   </div>
-  
+
 </ion-content>

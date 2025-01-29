@@ -6,5 +6,7 @@ export class Usuario {
     clave: string = '';
     fecha_nac: string = '';
     direccion: string = '';
+    pregunta: string = '';
+    respuesta: string = '';
     id_rol!: number;
 }

@@ -22,7 +22,8 @@ describe('RegistroPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('Debería devolver false si la contraseña no tiene mayúscula, un número y un carácter especial', () => { 
+  it('Debería devolver false si la contraseña no tiene mayúscula, un número, un carácter especial y 8 o mas letras', () => { 
+    component.contra = "sadsad123";
     const resultado = component.esContraValida();  
     expect(resultado).toBeFalse();
   });

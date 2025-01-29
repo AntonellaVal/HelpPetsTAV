@@ -8,46 +8,29 @@ ion-content{
     
 }
 
-.centrado{
+.centradoBoton{
     text-align: center;
 }
 
-.imagen{
-    width: 30%;
-    border-radius: 50%
+.boton{
+    margin-top: 20px;
 }
 
-.centradoImput{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.item {
+.item{
     --background: transparent;
     width: 100%; 
     max-width: 400px; 
-  }
+}
 
-.input {
+.input{
     width: 200%; 
     margin-top: 20px;
     --background: white;
     --border-radius: 10px;
     --padding-start: 10px;
     height: 50px;
-  }
 
-.boton{
-    margin-top: 20px;
-
-}
-
-.centradoOjo{
-    position: absolute; /* Fuera del flujo normal */
-    right: 10px; /* Ajusta según el espacio necesario */
-    top: 30%; /* Centra verticalmente */
-    transform: translateY(-50%); /* Corrige el desplazamiento */
-    z-index: 1;
+    display: flex; /* Activa flexbox para alinear los elementos internos */
+    align-items: center; /* Centra verticalmente el contenido */
+    position: relative; 
 }

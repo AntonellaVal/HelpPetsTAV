@@ -51,9 +51,9 @@ export class ModificarContraPage implements OnInit {
     // Validación de la confirmación de la contraseña
     if (this.contraNueva !== this.confirmarContra) {
       this.errorConfirmarContra = true;
-    } else if(this.contraNueva === this.modContra.clave){
-        this.errorConfirmarContra = true;  // La nueva contraseña no debe ser igual a la actual
-        this.presentAlert('Error', 'La nueva contraseña no puede ser igual a la actual.');
+    } else if(this.contra != this.modContra.clave){
+        this.errorConfirmarContra = true;  
+        this.presentAlert('Error', 'La contraseña actual no coincide');
     }else {
       this.errorConfirmarContra = false;
     }
@@ -80,7 +80,9 @@ export class ModificarContraPage implements OnInit {
       if(res){
         //suscribirnos al observable de la lista usuarios y rellenar mi variable propia
         this.bd.fetchCuenta().subscribe(data=>{
-          this.modContra = data;
+          //this.bd.presentAlert("aqui",data.toString());
+          this.modContra = data[0];
+          //this.bd.presentAlert("aqui2",this.modContra.clave);
         })
       }
     })
