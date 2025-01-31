@@ -11,6 +11,7 @@ import { BdServicioService } from 'src/app/services/bd-servicio.service';
 })
 export class FormAdopcionPage implements OnInit {
   animales: any;
+  id_usuario: number| null = null; // ID del usuario a modificar
 
   nombre_usuario: string = '';
   apellido_usuario: string = '';
@@ -91,6 +92,24 @@ async insertarAdopcion() {
   }
 
   ngOnInit() {
+    // Obtener el ID del usuario desde el localStorage
+    const idUsuario = localStorage.getItem('id_usuario');
+    if (idUsuario) {
+      this.id_usuario = parseInt(idUsuario, 10);
+
+      // Buscar los datos del usuario para mostrarlos en el formulario
+      this.bd.buscarUsuarios().then((usuarios) => {
+        const usuario = usuarios.find((u) => u.id_usuario === this.id_usuario);
+        if (usuario) {
+          this.nombre_usuario = usuario.nombre_usuario;
+          this.apellido_usuario = usuario.apellido_usuario;
+        }
+      }).catch(err => {
+        console.error('Error al cargar los datos del usuario:', err);
+      });
+    } else {
+      console.error('No se encontró el ID del usuario en el localStorage.');
+    }
   }
 
 }
